@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Orcelis</string>
+    <string name="title_parcelas">Parcelas</string>
+    <string name="title_informes">Informes</string>
+    <string name="title_configuracion">Configuración</string>
+    <string name="nombre">Nombre</string>
+    <string name="pais">País</string>
+    <string name="email">Email</string>
+    <string name="contrasenia">Contraseña</string>
+    <string name="repetir_contrasenia">Repetir contraseña</string>
+
+
+
+
+    <string name="creando_cuenta">Creando cuenta…</string>
+    <string name="min_caracteres">mínimo 3 caracteres</string>
+    <string name="pais_valido">Introduce un país</string>
+    <string name="email_valido">Introduce un email válido</string>
+    <string name="numero_caracteres">Entre 4 y 10 caracteres alfanumérico</string>
+    <string name="password_incorrecta">La contraseña no coincide</string>
+
+    <string name="login_falla">Login incorrecto</string>
+    <string name="autenticando">Autenticando…</string>
+</resources>
