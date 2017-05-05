@@ -18,7 +18,10 @@
     <string name="email_valido">Introduce un email válido</string>
     <string name="numero_caracteres">Entre 4 y 10 caracteres alfanumérico</string>
     <string name="password_incorrecta">La contraseña no coincide</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="con_cuenta">Ya tienes cuenta? Accede aquí</string>
 
     <string name="login_falla">Login incorrecto</string>
     <string name="autenticando">Autenticando…</string>
+    <string name="sin_contrasenia">Aún no tienes cuenta? Créate una</string>
 </resources>
