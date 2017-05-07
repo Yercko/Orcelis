@@ -9,6 +9,8 @@
     <string name="contrasenia">Contraseña</string>
     <string name="repetir_contrasenia">Repetir contraseña</string>
 
+    <string name="account_type">es.orcelis.orcelis.account</string>
+    <string name="provider_authority">es.orcelis.orcelis</string>
 
 
 

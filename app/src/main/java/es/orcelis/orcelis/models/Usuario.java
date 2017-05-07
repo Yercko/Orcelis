@@ -5,4 +5,19 @@ package es.orcelis.orcelis.models;
  */
 
 public class Usuario {
+    public String id;
+    public String email;
+    public String password;
+    public String telefono;
+    public String uuid;
+    public String fecha_fin_uso;
+
+    public Usuario(String id, String email, String password, String telefono, String uuid, String fecha_fin_uso) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.telefono = telefono;
+        this.uuid = uuid;
+        this.fecha_fin_uso = fecha_fin_uso;
+    }
 }
