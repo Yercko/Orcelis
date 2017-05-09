@@ -1,0 +1,90 @@
+package es.orcelis.orcelis.data;
+
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import es.orcelis.orcelis.data.BaseDatosPlagas;
+import es.orcelis.orcelis.data.ContractPlagas;
+import es.orcelis.orcelis.data.OpBaseDatosHelper;
+import es.orcelis.orcelis.provider.ContractParaUsuarios;
+
+/**
+ * Created by ymontero on 09/05/2017.
+ */
+
+public class PlagasProvider extends ContentProvider{
+    /**
+     * Instancia global del Content Resolver
+     */
+    private ContentResolver resolver;
+    private OpBaseDatosHelper datos;
+
+    @Override
+    public boolean onCreate() {
+        datos = OpBaseDatosHelper.obtenerInstancia(getContext());
+        resolver = getContext().getContentResolver();
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        // Comparar Uri
+        int match = ContractParaUsuarios.uriMatcher.match(uri);
+
+        Cursor c;
+
+        switch (match) {
+            case ContractParaUsuarios.ALLROWS:
+                // Consultando todos los registros
+                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, projection,
+                        selection, selectionArgs,
+                        null, null, sortOrder);
+                c.setNotificationUri(resolver,ContractParaUsuarios.CONTENT_URI);
+                break;
+            default:
+                throw new IllegalArgumentException("URI no soportada: " + uri);
+        }
+        return c;
+
+
+    }
+
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+        switch (ContractParaUsuarios.uriMatcher.match(uri)) {
+            case ContractParaUsuarios.CABECERAS_TIPO_CULTIVO:
+                return ContractParaUsuarios.generarMime("tipo_cultivo");
+            default:
+                throw new UnsupportedOperationException("Uri desconocida =>" + uri);
+        }
+    }
+
+    @Nullable
+    @Override
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+        return null;
+    }
+
+    @Override
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        return 0;
+    }
+
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+        return 0;
+    }
+
+
+    //TODO echar un ojo a notifyChange a true
+    private void notificarCambio(Uri uri) {
+        resolver.notifyChange(uri, null);
+    }
+}

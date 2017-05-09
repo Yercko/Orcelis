@@ -1,5 +1,7 @@
 package es.orcelis.orcelis.data;
 
+import android.provider.BaseColumns;
+
 import java.util.UUID;
 
 /**
@@ -8,7 +10,7 @@ import java.util.UUID;
 
 public class ContractPlagas {
 
-    interface ColumnasUsuario{
+    interface ColumnasUsuario extends BaseColumns{
         String ID = "id";
         String EMAIL = "email";
         String PASSWORD = "password";
@@ -17,23 +19,23 @@ public class ContractPlagas {
         String FECHA_FIN_USO = "fecha_fin_uso";
     }
 
-    interface ColumnasTipoCultivo{
+    interface ColumnasTipoCultivo  extends BaseColumns{
         String ID = "id";
         String NOMBRE = "nombre";
     }
 
-    interface ColumnasExplotacion{
+    interface ColumnasExplotacion extends BaseColumns{
         String ID = "id";
         String NOMBRE = "nombre";
         String TOKEN = "token";
     }
 
-    interface ColumnasCultivo{
+    interface ColumnasCultivo extends BaseColumns{
         String ID = "id";
         String GEOJSON = "geojson";
     }
 
-    interface ColumnasPuntos{
+    interface ColumnasPuntos extends BaseColumns{
         String ID = "id";
         String LAT = "lat";
         String LON = "lon";
@@ -41,20 +43,20 @@ public class ContractPlagas {
         String FECHA_HORA = "fecha_hora";
     }
 
-    interface ColumnasFotos{
+    interface ColumnasFotos extends BaseColumns{
         String ID = "id";       //id por codigo
         String GRAVEDAD = "gravedad";
         String NOTA = "nota";       //atento
         String MIME = "mime";   //atento y opcional
     }
 
-    interface ColumnasPuntosFotos{
+    interface ColumnasPuntosFotos extends BaseColumns{
         String ID = "id";
         String ID_FOTO = "id_foto";
         String ID_PUNTO = "id_punto";
     }
 
-    interface ColumnasTrips {
+    interface ColumnasTrips  extends BaseColumns{
         String ID = "id";
         String NOMBRE = "nombre";
         String FECHA_HORA_INICIO = "fecha_hora_inicio";
@@ -66,7 +68,7 @@ public class ContractPlagas {
         String ID_CULTIVO = "id_cultivo";
     }
 
-    interface ColumnasPlaga {
+    interface ColumnasPlaga extends BaseColumns {
         String ID = "id";
         String NOMBRE = "nombre";
         String NOMBRE_LATIN = "nombre_latin";
@@ -74,19 +76,19 @@ public class ContractPlagas {
         String DESCRIPCION = "descripcion";
     }
 
-    interface ColumnasImagenPlaga{
+    interface ColumnasImagenPlaga extends BaseColumns{
         String ID = "id";
         String MIME = "mime";
         //ajena
         String ID_PLAGA = "id_plaga";
     }
 
-    interface ColumnasUnidad {
+    interface ColumnasUnidad  extends BaseColumns{
         String ID = "id";
         String NOMBRE = "nombre";
     }
 
-    interface ColumnasPuntosPlaga {
+    interface ColumnasPuntosPlaga  extends BaseColumns{
         String ID = "id";
         String ID_PUNTO = "id_punto";
         String ID_PROBLEMA = "id_problema";
@@ -95,7 +97,7 @@ public class ContractPlagas {
         String ID_UNIDAD = "id_unidad";
     }
 
-    interface ColumnasTipoCultivo_Plaga {
+    interface ColumnasTipoCultivo_Plaga  extends BaseColumns{
         String ID = "id";
         String ID_TIPO_CULTIVO = "id_tipo_cultivo";
         String ID_PLAGA = "id_plaga";
@@ -104,12 +106,12 @@ public class ContractPlagas {
         String ID_REGION = "id_region";
     }
 
-    interface ColumnasPais {
+    interface ColumnasPais  extends BaseColumns{
         String ID = "id";
         String NOMBRE = "nombre";
     }
 
-    interface ColumnasRegion{
+    interface ColumnasRegion extends BaseColumns{
         String ID = "id";
         String NOMBRE = "nombre";
     }
