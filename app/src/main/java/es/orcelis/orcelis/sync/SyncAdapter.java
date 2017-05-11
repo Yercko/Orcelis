@@ -28,14 +28,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Proyección para las consultas
      */
-    private static final String[] PROJECTION = new String[]{
-            ContractParaUsuarios.Columnas._ID,
-            ContractParaUsuarios.Columnas.ID_REMOTA,
-            ContractParaUsuarios.Columnas.EMAIL,
-            ContractParaUsuarios.Columnas.PASSWORD,
-            ContractParaUsuarios.Columnas.UUID,
-            ContractParaUsuarios.Columnas.FECHA_FIN_USO
-    };
+
 
     // Indices para las columnas indicadas en la proyección
     public static final int COLUMNA_ID = 0;

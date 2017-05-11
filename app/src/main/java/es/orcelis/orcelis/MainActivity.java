@@ -1,9 +1,12 @@
 package es.orcelis.orcelis;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
+import android.content.OperationApplicationException;
 import android.database.DatabaseUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //getApplicationContext().deleteDatabase("pedidos.db");
         //datos = OpBaseDatosHelper
         //        .obtenerInstancia(getApplicationContext());
-        //new TareaPruebaDatos().execute();
+        new TareaPruebaDatos().execute();
 
 
     }
@@ -87,7 +90,21 @@ public class MainActivity extends AppCompatActivity {
 
             ContentResolver contentResolver = getContentResolver();
             // Lista de operaciones
-            ArrayList<PlagasProvider> ops = new ArrayList<>();
+            ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+
+            ops.add(ContentProviderOperation.newInsert(ContractParaUsuarios.CONTENT_URI)
+                    .withValue(ContractPlagas.TipoCultivo.ID, "2")
+                    .withValue(ContractPlagas.TipoCultivo.NOMBRE, 3.6f)
+                    .build());
+
+
+            try {
+                contentResolver.applyBatch(ContractParaUsuarios.AUTORIDAD, ops);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (OperationApplicationException e) {
+                e.printStackTrace();
+            }
             // [QUERIES]
             Log.d("Clientes", "Clientes");
             DatabaseUtils.dumpCursor(contentResolver.query(ContractParaUsuarios.CONTENT_URI, null, null, null, null));

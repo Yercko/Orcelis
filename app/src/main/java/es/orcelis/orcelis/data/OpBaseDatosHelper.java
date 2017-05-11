@@ -38,7 +38,7 @@ public final class OpBaseDatosHelper {
         return builder.query(db, proyTipoCultivo, null, null, null, null, null);
     }
 
-    private final String[] proyTipoCultivo = new String[]{
+    public static final String[] proyTipoCultivo = new String[]{
                 BaseDatosPlagas.Tablas.TIPOCULTIVO + "." + ContractPlagas.TipoCultivo.ID,
                 ContractPlagas.TipoCultivo.NOMBRE,
             };

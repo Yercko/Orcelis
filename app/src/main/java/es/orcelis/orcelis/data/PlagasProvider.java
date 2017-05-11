@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,16 +40,21 @@ public class PlagasProvider extends ContentProvider{
 
         Cursor c;
 
+        c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.proyTipoCultivo,
+                selection, selectionArgs,
+                null, null, sortOrder);
+        c.setNotificationUri(resolver,ContractParaUsuarios.CONTENT_URI);
+
         switch (match) {
             case ContractParaUsuarios.ALLROWS:
                 // Consultando todos los registros
-                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, projection,
+                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.proyTipoCultivo,
                         selection, selectionArgs,
                         null, null, sortOrder);
                 c.setNotificationUri(resolver,ContractParaUsuarios.CONTENT_URI);
                 break;
             default:
-                throw new IllegalArgumentException("URI no soportada: " + uri);
+                //throw new IllegalArgumentException("URI no soportada: " + uri);
         }
         return c;
 
@@ -69,7 +75,12 @@ public class PlagasProvider extends ContentProvider{
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        SQLiteDatabase db = datos.getDb();
+        db.insertOrThrow(BaseDatosPlagas.Tablas.TIPOCULTIVO, null, values);
+        //uri.buildUpon().appendPath("1").build();
+        notificarCambio(uri);
+        //TODO crear cabecera pedido
+        return uri;
     }
 
     @Override
