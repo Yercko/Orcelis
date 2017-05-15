@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -43,10 +42,16 @@
         </activity>
         <activity android:name="es.orcelis.orcelis.operations.login.SignupActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
 
         <!-- PROVIDER -->
 
+
+        <provider
+            android:name=".data.PlagasProvider"
+            android:authorities="es.orcelis.orcelis"
+            android:enabled="true"
+            android:exported="true"></provider>
         <!-- SERVICIO DE AUTENTICACIÓN -->
         <service android:name=".sync.AuthenticationService">
             <intent-filter>
