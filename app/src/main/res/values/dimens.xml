@@ -4,4 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="size_logo_login">50dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="padding_content">8dp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-package es.orcelis.orcelis;
+package es.orcelis.orcelis.operations.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.operations.dashboard.MainActivity;
 
 /**
  * Created by ymontero on 04/05/2017.

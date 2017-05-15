@@ -13,7 +13,6 @@
     <string name="provider_authority">es.orcelis.orcelis</string>
 
 
-
     <string name="creando_cuenta">Creando cuenta…</string>
     <string name="min_caracteres">mínimo 3 caracteres</string>
     <string name="pais_valido">Introduce un país</string>
@@ -26,4 +25,7 @@
     <string name="login_falla">Login incorrecto</string>
     <string name="autenticando">Autenticando…</string>
     <string name="sin_contrasenia">Aún no tienes cuenta? Créate una</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
