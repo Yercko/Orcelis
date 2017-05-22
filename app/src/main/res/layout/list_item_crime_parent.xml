@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="@drawable/atardecer">
+    android:background="@drawable/logo_orcelis">
 
     <TextView
         android:id="@+id/parent_list_item_crime_title_text_view"

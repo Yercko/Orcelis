@@ -13,6 +13,7 @@ public class Trip {
     private String id_tipo_cultivo;
     private String id_explotation;
     private String id_cultivo;
+    //TODO aniadir el campo array de coordenadas
 
     public Trip(String id, String nombre, String fecha_hora_inicio, String fecha_hora_fin, String id_usuario, String id_tipo_cultivo, String id_explotation, String id_cultivo) {
         this.id = id;

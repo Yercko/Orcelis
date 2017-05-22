@@ -7,4 +7,12 @@
     <dimen name="text_margin">16dp</dimen>
 
     <dimen name="padding_content">8dp</dimen>
+    <dimen name="size_toolbar_trip">100dp</dimen>
+    <dimen name="size_line_toolbar">5dp</dimen>
+    <dimen name="width_content_toolbar">350dp</dimen>
+
+    <dimen name="size_round_toolbar">16dp</dimen>
+    <dimen name="margin_toolbar_bolas">26dp</dimen>
+    <dimen name="margin_toolbar_text">16dp</dimen>
+    <dimen name="margin_top_toolbar_content">20dp</dimen>
 </resources>

@@ -28,4 +28,19 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+
+
+    <!-- Cultivos -->
+
+
+    <!-- Trips -->
+    <string name="title_pasos">Pasos a seguir</string>
+    <string name="tv_eleccion_cultivo">Elija un cultivo</string>
+    <string name="tv_inspeccion">Inspecciones</string>
+    <string name="tv_finalizar">Finalizar</string>
+    <string name="tv_siguiente">Siguiente</string>
+    <string name="tv_cultivo_seleccionado">Cultivo seleccionado: </string>
+
+
 </resources>
