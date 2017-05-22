@@ -1,43 +1,28 @@
 package es.orcelis.orcelis.operations.explotaciones;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import es.orcelis.orcelis.R;
-import es.orcelis.orcelis.operations.explotaciones.dummy.DummyContent;
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+import java.util.ArrayList;
+
+import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.operations.cultivos.TripsFragment;
+import es.orcelis.orcelis.operations.explotaciones.RecyclerView.ExplotacionItem;
+import es.orcelis.orcelis.operations.explotaciones.RecyclerView.ExplotacionChild;
+import es.orcelis.orcelis.operations.explotaciones.RecyclerView.ExplotacionExpandableAdapter;
+
 public class ExplotacionFragment extends Fragment {
     public static String TAG = "ExplotacionFragment";
-
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-
     public ExplotacionFragment() {
     }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ExplotacionFragment newInstance(int columnCount) {
-        ExplotacionFragment fragment = new ExplotacionFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+    public static TripsFragment newInstance() {
+        TripsFragment fragment = new TripsFragment();
         return fragment;
     }
 
@@ -45,51 +30,45 @@ public class ExplotacionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_explotacion_list, container, false);
+        View result = inflater.inflate(R.layout.fragment_explotaciones, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new ExplotacionRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
-        return view;
+        RecyclerView mCrimeRecyclerView = (RecyclerView)result.findViewById(R.id.list_crimes);
+
+        ExplotacionExpandableAdapter mExplotacionExpandableAdapter = new ExplotacionExpandableAdapter(getActivity(), generateCrimes());
+        mExplotacionExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+        mExplotacionExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+        mExplotacionExpandableAdapter.setParentAndIconExpandOnClick(true);
+        mCrimeRecyclerView.setAdapter(mExplotacionExpandableAdapter);
+
+        return result;
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
+    private ArrayList<ParentObject> generateCrimes() {
+        ArrayList<ParentObject> parentObjects = new ArrayList<>();
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+        ArrayList<Object> childcrimes = new ArrayList<>();
+
+        childcrimes.add(new ExplotacionChild("Explotacicion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacicion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacicion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacicion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacicion1",true));
 
 
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyContent.ParentItem item);
+        ExplotacionItem padre = new ExplotacionItem();
+        padre.setChildObjectList(childcrimes);
+        ExplotacionItem padre2 = new ExplotacionItem();
+        padre2.setChildObjectList(childcrimes);
+        ExplotacionItem padre3 = new ExplotacionItem();
+        padre3.setChildObjectList(childcrimes);
+        parentObjects.add(padre);
+        parentObjects.add(padre2);
+        return parentObjects;
     }
 }

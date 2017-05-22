@@ -17,22 +17,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.data.ContractPlagas;
+import es.orcelis.orcelis.data.OpBaseDatosHelper;
 import es.orcelis.orcelis.operations.configuracion.ConfiguracionFragment;
 import es.orcelis.orcelis.operations.cultivos.TripsFragment;
 import es.orcelis.orcelis.operations.explotaciones.ExplotacionFragment;
-import es.orcelis.orcelis.operations.explotaciones.dummy.DummyContent;
-import java.util.ArrayList;
-
-import es.orcelis.orcelis.data.ContractPlagas;
-import es.orcelis.orcelis.data.OpBaseDatosHelper;
-import es.orcelis.orcelis.data.PlagasProvider;
-import es.orcelis.orcelis.models.TipoCultivo;
 import es.orcelis.orcelis.provider.ContractParaUsuarios;
 
 import static es.orcelis.orcelis.utils.Constantes.ACCOUNT_TYPE;
 
-public class MainActivity extends AppCompatActivity implements ExplotacionFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     Account mAccount;
@@ -47,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements ExplotacionFragme
                 case R.id.navigation_parcelas:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content, ExplotacionFragment.newInstance(1), ExplotacionFragment.TAG)
+                            .replace(R.id.content, ExplotacionFragment.newInstance(), ExplotacionFragment.TAG)
                             .commit();
                     return true;
                 case R.id.navigation_informes:
@@ -88,8 +85,13 @@ public class MainActivity extends AppCompatActivity implements ExplotacionFragme
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.ParentItem item) {
-        Log.v("pulsado","se ha pulsado sobre el elemento tal");
+    protected void onResume() {
+        super.onResume();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content, ExplotacionFragment.newInstance(), ExplotacionFragment.TAG)
+                .commit();
     }
 
     OpBaseDatosHelper datos;

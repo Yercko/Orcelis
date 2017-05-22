@@ -35,17 +35,23 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".operations.dashboard.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity android:name="es.orcelis.orcelis.operations.login.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark">
-
+            android:theme="@style/AppTheme.Dark"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name="es.orcelis.orcelis.operations.login.SignupActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.Dark"
+            />
 
         <!-- PROVIDER -->
 
@@ -93,12 +99,8 @@
         <activity
             android:name=".operations.maps.MapsActivity"
             android:theme="@style/AppTheme_sin_actionbar"
-            android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="es.orcelis.orcelis.operations.dashboard.MainActivity" />

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Orcelis</string>
-    <string name="title_parcelas">Parcelas</string>
-    <string name="title_informes">Informes</string>
+    <string name="title_parcelas">Explotaciones</string>
+    <string name="title_informes">Historial</string>
     <string name="title_configuracion">Configuración</string>
     <string name="nombre">Nombre</string>
     <string name="pais">País</string>

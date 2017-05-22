@@ -13,6 +13,9 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import java.util.ArrayList;
 
 import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.operations.explotaciones.RecyclerView.ExplotacionItem;
+import es.orcelis.orcelis.operations.explotaciones.RecyclerView.ExplotacionChild;
+import es.orcelis.orcelis.operations.explotaciones.RecyclerView.ExplotacionExpandableAdapter;
 
 public class TripsFragment extends Fragment {
     public static String TAG = "TripsFragment";
@@ -32,15 +35,15 @@ public class TripsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View result = inflater.inflate(R.layout.fragment_trips, container, false);
+        View result = inflater.inflate(R.layout.fragment_explotaciones, container, false);
 
         RecyclerView mCrimeRecyclerView = (RecyclerView)result.findViewById(R.id.list_crimes);
 
-        CrimeExpandableAdapter mCrimeExpandableAdapter = new CrimeExpandableAdapter(getActivity(), generateCrimes());
-        mCrimeExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
-        mCrimeExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
-        mCrimeExpandableAdapter.setParentAndIconExpandOnClick(true);
-        mCrimeRecyclerView.setAdapter(mCrimeExpandableAdapter);
+        ExplotacionExpandableAdapter mExplotacionExpandableAdapter = new ExplotacionExpandableAdapter(getActivity(), generateCrimes());
+        mExplotacionExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+        mExplotacionExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+        mExplotacionExpandableAdapter.setParentAndIconExpandOnClick(true);
+        mCrimeRecyclerView.setAdapter(mExplotacionExpandableAdapter);
 
         return result;
     }
@@ -51,17 +54,19 @@ public class TripsFragment extends Fragment {
 
         ArrayList<Object> childcrimes = new ArrayList<>();
 
-        childcrimes.add(new CrimeChild("fecha1",true));
-        childcrimes.add(new CrimeChild("fecha1",true));
-        childcrimes.add(new CrimeChild("fecha1",true));
-        childcrimes.add(new CrimeChild("fecha1",true));
-        childcrimes.add(new CrimeChild("fecha1",true));
+        childcrimes.add(new ExplotacionChild("Explotacion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacion1",true));
+        childcrimes.add(new ExplotacionChild("Explotacion1",true));
 
 
-        Crime padre = new Crime();
+        ExplotacionItem padre = new ExplotacionItem();
         padre.setChildObjectList(childcrimes);
-        Crime padre2 = new Crime();
+        ExplotacionItem padre2 = new ExplotacionItem();
         padre2.setChildObjectList(childcrimes);
+        ExplotacionItem padre3 = new ExplotacionItem();
+        padre3.setChildObjectList(childcrimes);
         parentObjects.add(padre);
         parentObjects.add(padre2);
         return parentObjects;

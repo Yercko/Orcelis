@@ -1,4 +1,4 @@
-package es.orcelis.orcelis.operations.cultivos;
+package es.orcelis.orcelis.operations.explotaciones.RecyclerView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 
@@ -8,15 +8,15 @@ import java.util.List;
  * Created by yercko on 12/05/2017.
  */
 
-public class Crime implements ParentObject {
+public class ExplotacionItem implements ParentObject {
 
     private String title;
     private List<Object> mChildrenList;
 
-    public Crime(){
+    public ExplotacionItem(){
     }
 
-    public Crime(String title, List<Object> mChildrenList) {
+    public ExplotacionItem(String title, List<Object> mChildrenList) {
         this.title = title;
         this.mChildrenList = mChildrenList;
     }

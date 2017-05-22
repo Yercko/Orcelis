@@ -1,15 +1,15 @@
-package es.orcelis.orcelis.operations.cultivos;
+package es.orcelis.orcelis.operations.explotaciones.RecyclerView;
 
 /**
  * Created by yercko on 12/05/2017.
  */
 
-public class CrimeChild {
+public class ExplotacionChild {
 
     private String mDate;
     private boolean mSolved;
 
-    public CrimeChild(String date, boolean solved) {
+    public ExplotacionChild(String date, boolean solved) {
         mDate = date;
         mSolved = solved;
     }

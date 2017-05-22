@@ -1,7 +1,7 @@
-package es.orcelis.orcelis.operations.cultivos;
+package es.orcelis.orcelis.operations.explotaciones.RecyclerView;
 
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
@@ -12,15 +12,15 @@ import es.orcelis.orcelis.R;
  * Created by yercko on 12/05/2017.
  */
 
-public class CrimeParentViewHolder extends ParentViewHolder {
+public class ExplotacionParentViewHolder extends ParentViewHolder {
 
     public TextView mCrimeTitleTextView;
-    public ImageButton mParentDropDownArrow;
+    public ImageView mParentDropDownArrow;
 
-    public CrimeParentViewHolder(View itemView) {
+    public ExplotacionParentViewHolder(View itemView) {
         super(itemView);
 
         mCrimeTitleTextView = (TextView) itemView.findViewById(R.id.parent_list_item_crime_title_text_view);
-        mParentDropDownArrow = (ImageButton) itemView.findViewById(R.id.parent_list_item_expand_arrow);
+        mParentDropDownArrow = (ImageView) itemView.findViewById(R.id.parent_list_item_expand_arrow);
     }
 }
