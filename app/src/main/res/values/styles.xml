@@ -44,4 +44,24 @@
         <item name="android:textColorPrimary">@color/iron</item>
         <item name="android:background">@color/primary</item>
     </style>
+
+    <!-- FULL SCREEN DIALOG -->
+    <style name="LoadingTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/loading_background</item>
+        <item name="colorPrimaryDark">@color/loading_background</item>
+        <item name="colorAccent">@color/loading_background</item>
+
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+
+        <!-- No backgrounds, titles or window float -->
+        <item name="android:windowBackground">@color/transparente</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@color/transparente</item>
+        <item name="android:windowIsFloating">false</item>
+
+    </style>
+
+
 </resources>

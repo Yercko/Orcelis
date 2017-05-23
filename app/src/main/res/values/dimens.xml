@@ -15,4 +15,6 @@
     <dimen name="margin_toolbar_bolas">26dp</dimen>
     <dimen name="margin_toolbar_text">16dp</dimen>
     <dimen name="margin_top_toolbar_content">20dp</dimen>
+    <dimen name="marginNavigationButton">50dp</dimen>
+
 </resources>

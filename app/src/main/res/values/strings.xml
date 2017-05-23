@@ -41,6 +41,8 @@
     <string name="tv_finalizar">Finalizar</string>
     <string name="tv_siguiente">Siguiente</string>
     <string name="tv_cultivo_seleccionado">Cultivo seleccionado: </string>
+    <string name="cargando">Cargando…</string>
+    <string name="title_cultivos">Cultivos</string>
 
 
 </resources>

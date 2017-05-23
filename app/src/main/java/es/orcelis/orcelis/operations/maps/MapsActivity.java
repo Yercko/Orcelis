@@ -1,5 +1,6 @@
 package es.orcelis.orcelis.operations.maps;
 
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
@@ -7,12 +8,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.balysv.materialripple.MaterialRippleLayout;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.operations.login.LoginActivity;
+import es.orcelis.orcelis.utils.DialogManager;
 import es.orcelis.orcelis.utils.views.PasosView;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener{
@@ -45,7 +49,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tb);
+
+
+
+
+       DialogManager.getDialogDefault(this,getString(R.string.cargando));
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.anim_go_in, R.anim.anim_go_out);
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -53,8 +75,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         initViews();
         initValues();
         initListener();
+    }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.anim_back_in, R.anim.anim_back_out);
 
     }
 
@@ -71,25 +97,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void initListener(){
         pasosView.setOnDragListener(null);
         pasosView.setListenerClose(this);
+        pasosView.setVisibility(View.GONE);
 
         next_button.setOnClickListener(this);
 
-        MaterialRippleLayout.on(pasosView)
-                .rippleColor(Color.parseColor("#FF0000"))
-                .rippleAlpha(0.2f)
-                .rippleHover(true)
-                .create();
 
     }
 
    //TODO manage when map don't install
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
 
-        mMap.setMinZoomPreference(10.0f);
-        mMap.setMaxZoomPreference(17.0f);
         googleMap.setBuildingsEnabled(true);
+
 
         try {
             boolean success = googleMap.setMapStyle(
@@ -104,7 +126,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         LatLng orihuela = new LatLng(38.0654185, -0.8743761);
        // mMap.addMarker(new MarkerOptions().position(orihuela).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(orihuela));
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
+                orihuela, 10);
+        mMap.animateCamera(location);
         try {
             //TODO hacerlo en una Asyntask
             GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.google,getApplicationContext());
@@ -139,6 +163,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+
+
+
+        DialogManager.ocultarDialogDefault();
+
     }
 
 
@@ -150,9 +179,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
             case R.id.next_button:
                 pasosView.siguiente();
+
                 //trip_menu_botom.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.cultivos_menu, menu);
+        return true;
     }
 
     @Override

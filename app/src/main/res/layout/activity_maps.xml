@@ -3,8 +3,9 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/rlContent"
     >
-    <!--
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:minHeight="?attr/actionBarSize"
@@ -12,8 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+        <RelativeLayout
+            android:layout_marginRight="@dimen/marginNavigationButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/title_cultivos"
+                android:textColor="@color/colorPrimaryDark" />
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    -->
+
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,8 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         />
+
 </RelativeLayout>

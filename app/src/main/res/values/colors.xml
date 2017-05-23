@@ -2,7 +2,7 @@
 <resources>
 
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="primary">#546E7A</color>
@@ -33,6 +33,9 @@
 
     <color name="rojo_oscuro">#cf2437</color>
     <color name="rojo_claro">#b96d76</color>
+
+    <color name="transparente">#00ffffff</color>
+    <color name="loading_background">#90FFFFFF</color>
 
     <!--TODO array de colores oscuros para manejar los tipos de colores que aparecen en los bichos
     -->

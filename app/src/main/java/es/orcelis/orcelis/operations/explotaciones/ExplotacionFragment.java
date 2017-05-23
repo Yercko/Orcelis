@@ -45,6 +45,7 @@ public class ExplotacionFragment extends Fragment {
         mExplotacionExpandableAdapter.setParentAndIconExpandOnClick(true);
         mCrimeRecyclerView.setAdapter(mExplotacionExpandableAdapter);
 
+
         return result;
     }
 
