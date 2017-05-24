@@ -54,11 +54,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setSupportActionBar(tb);
 
 
-
-
        DialogManager.getDialogDefault(this,getString(R.string.cargando));
-
-
 
     }
 
