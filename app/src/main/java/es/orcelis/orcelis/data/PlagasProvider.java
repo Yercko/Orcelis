@@ -36,14 +36,14 @@ public class PlagasProvider extends ContentProvider{
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         // Comparar Uri
-        int match = ContractParaUsuarios.uriMatcher.match(uri);
+        int match = ContractPlagas.uriMatcher.match(uri);
 
         Cursor c;
 
         c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.proyTipoCultivo,
                 selection, selectionArgs,
                 null, null, sortOrder);
-        c.setNotificationUri(resolver,ContractParaUsuarios.CONTENT_URI);
+        c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);
 
         switch (match) {
             case ContractParaUsuarios.ALLROWS:
@@ -51,7 +51,7 @@ public class PlagasProvider extends ContentProvider{
                 c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.proyTipoCultivo,
                         selection, selectionArgs,
                         null, null, sortOrder);
-                c.setNotificationUri(resolver,ContractParaUsuarios.CONTENT_URI);
+                c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);
                 break;
             default:
                 //throw new IllegalArgumentException("URI no soportada: " + uri);
@@ -64,9 +64,9 @@ public class PlagasProvider extends ContentProvider{
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        switch (ContractParaUsuarios.uriMatcher.match(uri)) {
-            case ContractParaUsuarios.CABECERAS_TIPO_CULTIVO:
-                return ContractParaUsuarios.generarMime("tipo_cultivo");
+        switch (ContractPlagas.uriMatcher.match(uri)) {
+            case ContractPlagas.CABECERAS_TIPO_CULTIVO:
+                return ContractPlagas.generarMime("tipo_cultivo");
             default:
                 throw new UnsupportedOperationException("Uri desconocida =>" + uri);
         }

@@ -121,22 +121,22 @@ public class MainActivity extends AppCompatActivity {
             // Lista de operaciones
             ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
-            ops.add(ContentProviderOperation.newInsert(ContractParaUsuarios.CONTENT_URI)
+            ops.add(ContentProviderOperation.newInsert(ContractPlagas.CONTENT_URI_Usuario)
                     .withValue(ContractPlagas.TipoCultivo.ID, "2")
                     .withValue(ContractPlagas.TipoCultivo.NOMBRE, 3.6f)
                     .build());
 
 
             try {
-                contentResolver.applyBatch(ContractParaUsuarios.AUTORIDAD, ops);
+                contentResolver.applyBatch(ContractPlagas.AUTORIDAD, ops);
             } catch (RemoteException e) {
                 e.printStackTrace();
             } catch (OperationApplicationException e) {
                 e.printStackTrace();
             }
-            // [QUERIES]
+
             Log.d("Clientes", "Clientes");
-            DatabaseUtils.dumpCursor(contentResolver.query(ContractParaUsuarios.CONTENT_URI, null, null, null, null));
+            DatabaseUtils.dumpCursor(contentResolver.query(ContractPlagas.CONTENT_URI_Usuario, null, null, null, null));
 
             return null;
         }

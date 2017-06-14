@@ -6,12 +6,8 @@ package es.orcelis.orcelis.models;
 
 public class Explotacion {
     public String id;
-    public String nombre;
-    public String token;
+    public String usuario;
+    public String nombre; //max 200 caracteres
+    public String observaciones;
 
-    public Explotacion(String id, String nombre, String token) {
-        this.id = id;
-        this.nombre = nombre;
-        this.token = token;
-    }
 }

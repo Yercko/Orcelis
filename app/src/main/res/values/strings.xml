@@ -32,17 +32,21 @@
 
 
     <!-- Cultivos -->
+    <string name="tv_nuevo">Nuevo</string>
+    <string name="tv_inspecccion">Inspeccion</string>
+    <string name="tv_cultivo">Cultivo</string>
 
 
     <!-- Trips -->
     <string name="title_pasos">Pasos a seguir</string>
     <string name="tv_eleccion_cultivo">Elija un cultivo</string>
-    <string name="tv_inspeccion">Inspecciones</string>
+    <string name="tv_inspecciones">Inspecciones</string>
     <string name="tv_finalizar">Finalizar</string>
     <string name="tv_siguiente">Siguiente</string>
     <string name="tv_cultivo_seleccionado">Cultivo seleccionado: </string>
     <string name="cargando">Cargando…</string>
     <string name="title_cultivos">Cultivos</string>
+
 
 
 </resources>

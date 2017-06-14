@@ -62,6 +62,9 @@
         <item name="android:windowIsFloating">false</item>
 
     </style>
-
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/transparente</item>
+    </style>
 
 </resources>

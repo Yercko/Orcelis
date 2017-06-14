@@ -8,44 +8,34 @@ import android.provider.BaseColumns;
  * Contract Class entre el provider y las aplicaciones
  */
 public class ContractParaUsuarios {
-    /**
-     * Autoridad del Content Provider
-     */
-    public final static String AUTHORITY
-            = "es.orcelis.orcelis";
+
     /**
      * Representación de la tabla a consultar
      */
     public static final String USUARIO = "usuario";
     /**
      * Tipo MIME que retorna la consulta de una sola fila
-     */
+
     public final static String SINGLE_MIME =
             "vnd.android.cursor.item/vnd." + AUTHORITY + USUARIO;
+     */
+
     /**
      * Tipo MIME que retorna la consulta de { CONTENT_URI}
-     */
+
     public final static String MULTIPLE_MIME =
             "vnd.android.cursor.dir/vnd." + AUTHORITY + USUARIO;
-    /**
-     * URI de contenido principal
      */
-    public final static Uri CONTENT_URI =
-            Uri.parse("content://" + AUTHORITY + "/" + USUARIO);
-    /**
-     * Comparador de URIs de contenido
-     */
-    public static final UriMatcher uriMatcher;
+
     /**
      * Código para URIs de multiples registros
      */
     public static final int ALLROWS = 1;
     /**
      * Código para URIS de un solo registro
-     */
+     *
     public static final int SINGLE_ROW = 2;
     // Asignación de URIs
-    /*
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, USUARIO, ALLROWS);
@@ -59,8 +49,6 @@ public class ContractParaUsuarios {
 
     //TODO lo siguiente esta pensado para un Contract con multiples tablas
     // Casos
-    public static final int CABECERAS_TIPO_CULTIVO = 100;
-    public static final int CABECERAS_TIPO_CULTIVO_ID = 101;
     /*
     public static final int CABECERAS_ID_DETALLES = 102;
 
@@ -75,7 +63,7 @@ public class ContractParaUsuarios {
 
     public static final int FORMAS_PAGO = 500;
     public static final int FORMAS_PAGO_ID = 501;
-    */
+
 
     public static final String AUTORIDAD = "es.orcelis.orcelis";
 
@@ -97,7 +85,6 @@ public class ContractParaUsuarios {
 
         uriMatcher.addURI(AUTORIDAD, "formas_pago", FORMAS_PAGO);
         uriMatcher.addURI(AUTORIDAD, "formas_pago/*", FORMAS_PAGO_ID);
-        */
     }
 
     public static final String BASE_CONTENIDOS = "plagas.";
@@ -121,5 +108,5 @@ public class ContractParaUsuarios {
             return null;
         }
     }
-
+    */
 }

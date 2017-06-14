@@ -5,30 +5,26 @@
     android:orientation="vertical"
     android:id="@+id/rlContent"
     >
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:gravity="center_vertical"
+        android:theme="@style/AppTheme.AppBarOverlay">
         <RelativeLayout
-            android:layout_marginRight="@dimen/marginNavigationButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/tvTitle"
-                style="@style/Base.TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:minHeight="?attr/actionBarSize"
+                android:background="@color/white"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@string/title_cultivos"
-                android:textColor="@color/colorPrimaryDark" />
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                >
+            </android.support.v7.widget.Toolbar>
         </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-
+    </android.support.design.widget.AppBarLayout>
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,16 +40,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        />
+        android:visibility="gone" />
 
     <include
         android:id="@+id/include_menu_bottom"
         layout="@layout/lay_trip_menu_botom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        />
+        android:background="?attr/selectableItemBackground"
+        android:visibility="gone" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margenes_fab"
+        android:src="@drawable/ic_add_black_24dp" />
 </RelativeLayout>

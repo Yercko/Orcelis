@@ -1,5 +1,7 @@
 package es.orcelis.orcelis.data;
 
+import android.content.UriMatcher;
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 import java.util.UUID;
@@ -9,6 +11,58 @@ import java.util.UUID;
  */
 
 public class ContractPlagas {
+    /**
+     * Autoridad del Content Provider
+     */
+    public final static String AUTORIDAD
+            = "es.orcelis.orcelis";
+    /**
+     * URI de contenido principal
+     */
+    public static Uri CONTENT_URI_Usuario = Uri.parse("content://" + AUTORIDAD + "/"+"Usuario");
+    public static Uri CONTENT_URI_TipoCultivo = Uri.parse("content://" + AUTORIDAD + "/"+"TipoCultivo");
+    public static Uri CONTENT_URI_Explotacion = Uri.parse("content://" + AUTORIDAD + "/"+"Explotacion");
+    public static Uri CONTENT_URI_Cultivo = Uri.parse("content://" + AUTORIDAD + "/"+"Cultivo");
+    public static Uri CONTENT_URI_Puntos = Uri.parse("content://" + AUTORIDAD + "/"+"Puntos");
+    public static Uri CONTENT_URI_Fotos = Uri.parse("content://" + AUTORIDAD + "/"+"Fotos");
+    public static Uri CONTENT_URI_PuntosFotos = Uri.parse("content://" + AUTORIDAD + "/"+"PuntosFotos");
+    public static Uri CONTENT_URI_Trips = Uri.parse("content://" + AUTORIDAD + "/"+"Trips");
+    public static Uri CONTENT_URI_Plaga = Uri.parse("content://" + AUTORIDAD + "/"+"Plaga");
+    public static Uri CONTENT_URI_ImagenPlaga = Uri.parse("content://" + AUTORIDAD + "/"+"ImagenPlaga");
+    public static Uri CONTENT_URI_Unidad = Uri.parse("content://" + AUTORIDAD + "/"+"Unidad");
+    public static Uri CONTENT_URI_PuntosPlaga = Uri.parse("content://" + AUTORIDAD + "/"+"PuntosPlaga");
+    public static Uri CONTENT_URI_TipoCultivo_Plaga = Uri.parse("content://" + AUTORIDAD + "/"+"TipoCultivo_Plaga");
+    public static Uri CONTENT_URI_Pais = Uri.parse("content://" + AUTORIDAD + "/"+"Pais");
+    public static Uri CONTENT_URI_Region = Uri.parse("content://" + AUTORIDAD + "/"+"Region");
+    /**
+     * Comparador de URIs de contenido
+     */
+    public static final UriMatcher uriMatcher;
+
+
+    public static final int CABECERAS_TIPO_CULTIVO = 100;
+    public static final int CABECERAS_TIPO_CULTIVO_ID = 101;
+
+    static {
+        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+        uriMatcher.addURI(AUTORIDAD, "tipo_cultivo", CABECERAS_TIPO_CULTIVO);
+        uriMatcher.addURI(AUTORIDAD, "tipo_cultivo/*", CABECERAS_TIPO_CULTIVO_ID);
+    }
+
+    public static final String BASE_CONTENIDOS = "plagas.";
+    public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
+            + BASE_CONTENIDOS;
+
+    public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
+            + BASE_CONTENIDOS;
+    public static String generarMime(String id) {
+        if (id != null) {
+            return TIPO_CONTENIDO + id;
+        } else {
+            return null;
+        }
+    }
 
     interface ColumnasUsuario extends BaseColumns{
         String ID = "id";

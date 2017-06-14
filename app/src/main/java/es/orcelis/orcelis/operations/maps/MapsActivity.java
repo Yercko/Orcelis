@@ -3,6 +3,7 @@ package es.orcelis.orcelis.operations.maps;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,11 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.operations.cultivos.OpcionesCultivosListDialogFragment;
 import es.orcelis.orcelis.operations.login.LoginActivity;
 import es.orcelis.orcelis.utils.DialogManager;
 import es.orcelis.orcelis.utils.views.PasosView;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener{
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener,OpcionesCultivosListDialogFragment.Listener{
 
     private GoogleMap mMap;
 
@@ -44,6 +46,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LinearLayout trip_menu_botom;
     private ImageView next_button;
 
+    private FloatingActionButton fab;
+    private OpcionesCultivosListDialogFragment opcionesCultivos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-
+        if(getSupportActionBar() != null ){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.title_cultivos));
+        }
 
        DialogManager.getDialogDefault(this,getString(R.string.cargando));
 
@@ -84,10 +91,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         pasosView = (PasosView)findViewById(R.id.pasosView);
         trip_menu_botom = (LinearLayout)findViewById(R.id.include_menu_bottom);
         next_button = (ImageView)findViewById(R.id.next_button);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        opcionesCultivos = OpcionesCultivosListDialogFragment.newInstance();
     }
 
     public void initValues(){
+        //TODO manage Data from Bundle
 
+
+        //TODO manage seguir con el ultimo trip sin finalizar, en caso de que no,finalizar
     }
 
     public void initListener(){
@@ -96,7 +108,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         pasosView.setVisibility(View.GONE);
 
         next_button.setOnClickListener(this);
-
+        fab.setOnClickListener(this);
 
     }
 
@@ -139,26 +151,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             layer.setOnFeatureClickListener(new GeoJsonLayer.GeoJsonOnFeatureClickListener() {
                 @Override
                 public void onFeatureClick(GeoJsonFeature geoJsonFeature) {
-                    if (geoJsonFeature !=null){
-                        if (geoJsonFeature.getPolygonStyle() != null){
-                            geoJsonFeature.getPolygonStyle().setFillColor(getResources().getColor(R.color.black));
-
+                    if (geoJsonFeature !=null) {
+                        if (pasosView.getVisibility() == View.VISIBLE){
+                            if (geoJsonFeature.getPolygonStyle() != null) {
+                                geoJsonFeature.getPolygonStyle().setFillColor(getResources().getColor(R.color.black));
+                            }
+                            /**
+                             * Manejar else para contemplar pulsacion fuera del mapa, deseleccionar zona y ocultar menu inferior
+                             * Solo cuando se esté en el PASO 1
+                             */
+                            pasosView.changecheck(true, 0);
+                            trip_menu_botom.setVisibility(View.VISIBLE);
                         }
-                        pasosView.changecheck(true,0);
-                        trip_menu_botom.setVisibility(View.VISIBLE);
                     }
-                    /**
-                     * Manejar else para contemplar pulsacion fuera del mapa, deseleccionar zona y ocultar menu inferior
-                     * Solo cuando se esté en el PASO 1
-                     */
+
 
                 }
             });
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
-
 
 
 
@@ -172,11 +184,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         switch (v.getId()){
             case R.id.btn_close_pasos:
                 pasosView.setVisibility(View.GONE);
+                trip_menu_botom.setVisibility(View.GONE);
+                if (getSupportActionBar() != null){
+                    getSupportActionBar().show();
+                }
+                fab.show();
                 break;
             case R.id.next_button:
                 pasosView.siguiente();
-
                 //trip_menu_botom.setVisibility(View.GONE);
+                break;
+            case R.id.fab:
+                opcionesCultivos.show(getSupportFragmentManager(), OpcionesCultivosListDialogFragment.TAG);
                 break;
         }
     }
@@ -184,7 +203,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.cultivos_menu, menu);
+        //TODO
+        //getMenuInflater().inflate(R.menu.cultivos_menu, menu);
         return true;
     }
 
@@ -192,6 +212,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onBackPressed() {
         super.onBackPressed();
 
+
+    }
+
+    @Override
+    public void onOpcionesCultivosClicked(int position) {
+        //TODO manage items botomMenu
+        if (position == 0){
+            manageInspeccion();
+        }
+    }
+
+
+    public void manageInspeccion(){
+        //ocultar actionbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+        //mostrar pasos
+        pasosView.setVisibility(View.VISIBLE);
+        //
+        managePosicionActualEnCultivo();
+
+    }
+
+    public void managePosicionActualEnCultivo(){
+        fab.hide();
+        //TODO en background leer los puntos de la region GeoJson
 
     }
 
