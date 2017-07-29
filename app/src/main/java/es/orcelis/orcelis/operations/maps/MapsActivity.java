@@ -1,11 +1,8 @@
 package es.orcelis.orcelis.operations.maps;
 
-import android.app.ProgressDialog;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,7 +10,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,12 +24,9 @@ import com.google.maps.android.geojson.GeoJsonLayer;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.operations.cultivos.OpcionesCultivosListDialogFragment;
-import es.orcelis.orcelis.operations.login.LoginActivity;
 import es.orcelis.orcelis.utils.DialogManager;
 import es.orcelis.orcelis.utils.views.PasosView;
 
@@ -48,6 +41,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FloatingActionButton fab;
     private OpcionesCultivosListDialogFragment opcionesCultivos;
+    Toolbar tb;
+
+    //es necesario guardar en el shared preference las siguientes variables de estado
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +66,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
+        //TODO manage load SharedPreference
+
+
         overridePendingTransition(R.anim.anim_go_in, R.anim.anim_go_out);
 
 
@@ -115,66 +116,67 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    //TODO manage when map don't install
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        //TODO ordenar todo en funciones helper de configuracion de cada parte SetUpMapIfNeed
+        if(mMap == null) {
+            //TODO parte de configuracion visual del mapa
+            mMap = googleMap;
 
-        mMap = googleMap;
-
-        googleMap.setBuildingsEnabled(true);
+            googleMap.setBuildingsEnabled(true);
 
 
-        try {
-            boolean success = googleMap.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(
-                            this, R.raw.style));
+            try {
+                boolean success = googleMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                                this, R.raw.style));
 
-            if (!success) {
-                Log.e("maps", "Style parsing failed.");
+                if (!success) {
+                    Log.e("maps", "Style parsing failed.");
+                }
+            } catch (Resources.NotFoundException e) {
+                Log.e("maps", "Can't find style. Error: ", e);
             }
-        } catch (Resources.NotFoundException e) {
-            Log.e("maps", "Can't find style. Error: ", e);
-        }
-        LatLng orihuela = new LatLng(38.0654185, -0.8743761);
-       // mMap.addMarker(new MarkerOptions().position(orihuela).title("Marker in Sydney"));
-        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
-                orihuela, 10);
-        mMap.animateCamera(location);
-        try {
-            //TODO hacerlo en una Asyntask
-            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.google,getApplicationContext());
-            for (GeoJsonFeature capa: layer.getFeatures()) {
-                capa.getPolygonStyle().setFillColor(getResources().getColor(R.color.primary_darker_transparent));
-                capa.getPolygonStyle().setStrokeColor(getResources().getColor(R.color.accent));
-                capa.getPolygonStyle().setStrokeWidth(3.0f);
-            }
-            //addGeoJsonLayerToMap(layer);
-            layer.addLayerToMap();
+            LatLng orihuela = new LatLng(38.0654185, -0.8743761);
+            // mMap.addMarker(new MarkerOptions().position(orihuela).title("Marker in Sydney"));
+            CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
+                    orihuela, 10);
+            mMap.animateCamera(location);
+            try {
+                //TODO hacerlo en una Asyntask
+                GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.google, getApplicationContext());
+                for (GeoJsonFeature capa : layer.getFeatures()) {
+                    capa.getPolygonStyle().setFillColor(getResources().getColor(R.color.primary_darker_transparent));
+                    capa.getPolygonStyle().setStrokeColor(getResources().getColor(R.color.accent));
+                    capa.getPolygonStyle().setStrokeWidth(3.0f);
+                }
+                //addGeoJsonLayerToMap(layer);
+                layer.addLayerToMap();
 
-            layer.setOnFeatureClickListener(new GeoJsonLayer.GeoJsonOnFeatureClickListener() {
-                @Override
-                public void onFeatureClick(GeoJsonFeature geoJsonFeature) {
-                    if (geoJsonFeature !=null) {
-                        if (pasosView.getVisibility() == View.VISIBLE){
+                layer.setOnFeatureClickListener(new GeoJsonLayer.GeoJsonOnFeatureClickListener() {
+                    @Override
+                    public void onFeatureClick(GeoJsonFeature geoJsonFeature) {
+                        if (geoJsonFeature != null) {
                             if (geoJsonFeature.getPolygonStyle() != null) {
                                 geoJsonFeature.getPolygonStyle().setFillColor(getResources().getColor(R.color.black));
+
                             }
-                            /**
-                             * Manejar else para contemplar pulsacion fuera del mapa, deseleccionar zona y ocultar menu inferior
-                             * Solo cuando se esté en el PASO 1
-                             */
                             pasosView.changecheck(true, 0);
                             trip_menu_botom.setVisibility(View.VISIBLE);
                         }
+                        /**
+                         * Manejar else para contemplar pulsacion fuera del mapa, deseleccionar zona y ocultar menu inferior
+                         * Solo cuando se esté en el PASO 1
+                         */
+
                     }
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            //TODO manage lifeCicle maps
 
-
-                }
-            });
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
+            DialogManager.ocultarDialogDefault();
         }
 
-
-
-        DialogManager.ocultarDialogDefault();
 
     }
 
@@ -214,6 +216,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
+
+    public void manageToolbars(){
+
+    }
+
 
     @Override
     public void onOpcionesCultivosClicked(int position) {

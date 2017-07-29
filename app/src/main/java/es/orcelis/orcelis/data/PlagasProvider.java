@@ -9,9 +9,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import es.orcelis.orcelis.data.BaseDatosPlagas;
-import es.orcelis.orcelis.data.ContractPlagas;
-import es.orcelis.orcelis.data.OpBaseDatosHelper;
 import es.orcelis.orcelis.provider.ContractParaUsuarios;
 
 /**

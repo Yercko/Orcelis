@@ -16,6 +16,7 @@
     <dimen name="margin_toolbar_text">16dp</dimen>
     <dimen name="margin_top_toolbar_content">20dp</dimen>
     <dimen name="marginNavigationButton">50dp</dimen>
+    <dimen name="padding_menu">6dp</dimen>
 
 
     <dimen name="margenes_fab">16dp</dimen>

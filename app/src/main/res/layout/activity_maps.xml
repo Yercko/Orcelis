@@ -5,26 +5,6 @@
     android:orientation="vertical"
     android:id="@+id/rlContent"
     >
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:minHeight="?attr/actionBarSize"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                >
-            </android.support.v7.widget.Toolbar>
-        </RelativeLayout>
-    </android.support.design.widget.AppBarLayout>
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,25 +13,28 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="es.orcelis.orcelis.operations.maps.MapsActivity" />
+        tools:context="es.orcelis.orcelis.operations.maps.MapsActivity"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <include layout="@layout/lat_custom_toolbar" />
 
     <es.orcelis.orcelis.utils.views.PasosView
         android:id="@+id/pasosView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:visibility="gone" />
+        />
 
     <include
         android:id="@+id/include_menu_bottom"
         layout="@layout/lay_trip_menu_botom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="?attr/selectableItemBackground"
-        android:visibility="gone" />
-
+        />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

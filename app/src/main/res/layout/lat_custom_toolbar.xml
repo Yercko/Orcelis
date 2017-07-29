@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/tBar"
-    android:layout_height="?attr/actionBarSize"
+    android:id="@+id/toolbar"
     android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/gris_claro"
     android:minHeight="?attr/actionBarSize"
-    app:contentInsetLeft="0dp"
-    app:contentInsetStart="0dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:title="@null"
     android:title="@null"
     app:borderWidth="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
     app:elevation="0dp"
+    app:layout_collapseMode="pin"
     app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
-    app:layout_collapseMode="pin">
-
+    app:popupTheme="@style/AppTheme"
+    app:title="@null">
 
     <RelativeLayout
-        android:layout_marginRight="@dimen/marginNavigationButton"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/marginNavigationButton">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -33,8 +31,6 @@
             android:gravity="center"
             android:text="@string/title_cultivos"
             android:textColor="@color/colorPrimaryDark" />
-
-
     </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>

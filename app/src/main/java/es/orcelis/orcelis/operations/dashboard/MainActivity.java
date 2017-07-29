@@ -23,13 +23,13 @@ import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.data.ContractPlagas;
 import es.orcelis.orcelis.data.OpBaseDatosHelper;
 import es.orcelis.orcelis.operations.configuracion.ConfiguracionFragment;
-import es.orcelis.orcelis.operations.cultivos.TripsFragment;
 import es.orcelis.orcelis.operations.explotaciones.ExplotacionFragment;
-import es.orcelis.orcelis.provider.ContractParaUsuarios;
+import es.orcelis.orcelis.operations.historial.HistorialItemFragment;
+import es.orcelis.orcelis.operations.historial.dummy.DummyContent;
 
 import static es.orcelis.orcelis.utils.Constantes.ACCOUNT_TYPE;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HistorialItemFragment.OnListFragmentInteractionListener {
 
     private TextView mTextMessage;
     Account mAccount;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_informes:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content, TripsFragment.newInstance(), TripsFragment.TAG)
+                            .replace(R.id.content, HistorialItemFragment.newInstance(1), HistorialItemFragment.TAG)
                             .commit();
                     return true;
                 case R.id.navigation_configuracion:
@@ -95,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     OpBaseDatosHelper datos;
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
 
     public class TareaPruebaDatos extends AsyncTask<Void, Void, Void> {
         @Override
