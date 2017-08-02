@@ -10,8 +10,13 @@ public class Cultivo {
     public String id;
     public GeoJSONObject geojson;
 
+    public Cultivo(){
+
+    }
     public Cultivo(String id, GeoJSONObject geojson) {
         this.id = id;
         this.geojson = geojson;
     }
+
+
 }

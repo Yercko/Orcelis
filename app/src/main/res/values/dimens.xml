@@ -23,4 +23,14 @@
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
 
+    <!-- Nuevo Trip -->
+    <dimen name="size_add_button">32dp</dimen>
+    <dimen name="size_bottom_sheet">130dp</dimen>
+    <!-- add nota plaga -->
+    <dimen name="size_camera_icon">100dp</dimen>
+    <dimen name="padding_camera">40dp</dimen>
+    <dimen name="size_icon_elejir_plaga">50dp</dimen>
+    <dimen name="size_note_cmp">100dp</dimen>
+
+
 </resources>

@@ -31,12 +31,16 @@
     <color name="accent_oscuro">#af7e1f</color>
     <color name="accent_claro">#fdb52b</color>
 
+    <color name="rojo_chillon">#de0019</color>
     <color name="rojo_oscuro">#cf2437</color>
     <color name="rojo_claro">#b96d76</color>
 
     <color name="transparente">#00ffffff</color>
     <color name="loading_background">#90FFFFFF</color>
 
+    <color name="verde_chillon">#00e700</color>
+
+    <color name="azul_background_mapa">#1d2c4d</color>
     <!--TODO array de colores oscuros para manejar los tipos de colores que aparecen en los bichos
     -->
 

@@ -6,11 +6,19 @@ xmlns:android="http://schemas.android.com/apk/res/android">
         <shape
             android:shape="rectangle"
             >
+
             <gradient
                 android:angle="0"
                 android:startColor="@color/accent_oscuro"
                 android:endColor="@color/accent_claro">
             </gradient>
+            <!--
+           <gradient
+               android:angle="0"
+               android:startColor="@color/aluminum"
+               android:endColor="@color/gris_claro">
+           </gradient>
+           -->
         </shape>
     </item>
 

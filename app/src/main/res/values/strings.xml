@@ -46,7 +46,12 @@
     <string name="tv_cultivo_seleccionado">Cultivo seleccionado: </string>
     <string name="cargando">Cargando…</string>
     <string name="title_cultivos">Cultivos</string>
+    <string name="add_nueva_npta">Añadir nueva plaga</string>
 
-
+    <!-- Añadir nota -->
+    <string name="tv_add_photo">Agregue una foto</string>
+    <string name="tv_elije_plaga">Elija la plaga</string>
+    <string name="tv_utilizar_localizacion">Usando la localización actual…</string>
+    <string name="tv_agregue_fotos">Agregue una nota…</string>
 
 </resources>
