@@ -12,12 +12,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -49,6 +52,7 @@ import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.models.Cultivo;
 import es.orcelis.orcelis.operations.cultivos.OpcionesCultivosListDialogFragment;
 import es.orcelis.orcelis.utils.DialogManager;
+import es.orcelis.orcelis.utils.MedidasManager;
 import es.orcelis.orcelis.utils.views.PasosView;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
@@ -78,7 +82,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Polygon poligono_modificable;
     PolygonOptions poligono_mod_Options;
 
-    HashMap<Marker,LatLng> newRegionCultivo;
+    List<Marker> newRegionCultivo;
+
+    Location localizacion_actual;
+
+
+    //-------------------------------------
+    LinearLayout btn_anterior_paso;
+    TextView nombre_cultivo_seleccionado;
+    LinearLayout btn_finalizar_pasos;
+    LinearLayout btn_siguiente_paso;
+    RecyclerView rv_listado_plagas;
+    LinearLayout btn_add_new_plaga;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +157,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         next_button = (ImageView)findViewById(R.id.next_button);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         opcionesCultivos = OpcionesCultivosListDialogFragment.newInstance();
+
+        btn_anterior_paso = (LinearLayout) findViewById(R.id.bnt_anterior_paso);
+        nombre_cultivo_seleccionado = (TextView) findViewById(R.id.tv_cultivo_seleccionado);
+        btn_finalizar_pasos = (LinearLayout)findViewById(R.id.btn_finalizar_pasos);
+        btn_siguiente_paso = (LinearLayout)findViewById(R.id.btn_siguiente_paso);
+        rv_listado_plagas = (RecyclerView) findViewById(R.id.recycler_listado_plagas);
+        btn_add_new_plaga = (LinearLayout)findViewById(R.id.btn_add_new_plaga);
+
+
     }
 
     public void initValues(){
@@ -155,6 +182,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         next_button.setOnClickListener(this);
         fab.setOnClickListener(this);
+
+        btn_anterior_paso.setOnClickListener(this);
+        btn_finalizar_pasos.setOnClickListener(this);
+        btn_siguiente_paso.setOnClickListener(this);
+        btn_add_new_plaga.setOnClickListener(this);
 
     }
 
@@ -173,51 +205,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 boolean success = googleMap.setMapStyle(
                         MapStyleOptions.loadRawResourceStyle(
                                 this, R.raw.style));
-
                 if (!success) {
                     Log.e("maps", "Style parsing failed.");
                 }
             } catch (Resources.NotFoundException e) {
                 Log.e("maps", "Can't find style. Error: ", e);
             }
-            LatLng orihuela = new LatLng(38.0654185, -0.8743761);
-            // mMap.addMarker(new MarkerOptions().position(orihuela).title("Marker in Sydney"));
-            CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
-                    orihuela, 10);
-            mMap.animateCamera(location);
-            try {
-                //TODO hacerlo en una Asyntask
-                GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.google, getApplicationContext());
-                for (GeoJsonFeature capa : layer.getFeatures()) {
-                    capa.getPolygonStyle().setFillColor(getResources().getColor(R.color.primary_darker_transparent));
-                    capa.getPolygonStyle().setStrokeColor(getResources().getColor(R.color.accent));
-                    capa.getPolygonStyle().setStrokeWidth(3.0f);
-                }
-                //addGeoJsonLayerToMap(layer);
-                layer.addLayerToMap();
 
-                layer.setOnFeatureClickListener(new GeoJsonLayer.GeoJsonOnFeatureClickListener() {
-                    @Override
-                    public void onFeatureClick(GeoJsonFeature geoJsonFeature) {
-                        if (geoJsonFeature != null) {
-                            if (geoJsonFeature.getPolygonStyle() != null) {
-                                geoJsonFeature.getPolygonStyle().setFillColor(getResources().getColor(R.color.black));
+            //TODO por defecto se muestran los cultivos disponibles
+            configurar_mapa_inspeccion();
 
-                            }
-                            pasosView.changecheck(true, 0);
-                            trip_menu_botom.setVisibility(View.VISIBLE);
-                        }
-                        /**
-                         * Manejar else para contemplar pulsacion fuera del mapa, deseleccionar zona y ocultar menu inferior
-                         * Solo cuando se esté en el PASO 1
-                         */
-
-                    }
-                });
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-            //TODO manage lifeCicle maps
 
             DialogManager.ocultarDialogDefault();
         }
@@ -290,14 +287,54 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void configurar_mapa_inspeccion(){
+        LatLng orihuela = new LatLng(38.0654185, -0.8743761);
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
+                orihuela, 10);
+        mMap.animateCamera(location);
+        try {
+            //TODO hacerlo en una Asyntask
+            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.google, getApplicationContext());
+            for (GeoJsonFeature capa : layer.getFeatures()) {
+                capa.getPolygonStyle().setFillColor(getResources().getColor(R.color.primary_darker_transparent));
+                capa.getPolygonStyle().setStrokeColor(getResources().getColor(R.color.accent));
+                capa.getPolygonStyle().setStrokeWidth(3.0f);
+            }
+            //addGeoJsonLayerToMap(layer);
+            layer.addLayerToMap();
+
+            layer.setOnFeatureClickListener(new GeoJsonLayer.GeoJsonOnFeatureClickListener() {
+                @Override
+                public void onFeatureClick(GeoJsonFeature geoJsonFeature) {
+                    if (geoJsonFeature != null) {
+                        if (geoJsonFeature.getPolygonStyle() != null) {
+                            geoJsonFeature.getPolygonStyle().setFillColor(getResources().getColor(R.color.black));
+
+                        }
+                        pasosView.changecheck(true, 0);
+                        trip_menu_botom.setVisibility(View.VISIBLE);
+                    }
+                    /**
+                     * Manejar else para contemplar pulsacion fuera del mapa, deseleccionar zona y ocultar menu inferior
+                     * Solo cuando se esté en el PASO 1
+                     */
+
+                }
+            });
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        //TODO manage lifeCicle maps
+    }
+
     public void crear_cultivo(){
-        newRegionCultivo = new HashMap<>();
+        newRegionCultivo = new ArrayList<>();
         poligono_mod_Options = new PolygonOptions();
 
-        newRegionCultivo.put(mMap.addMarker(new MarkerOptions().position(new LatLng(37.35, -122.0)).draggable(true)),new LatLng(37.35, -122.0));
-        newRegionCultivo.put(mMap.addMarker(new MarkerOptions().position(new LatLng(37.45, -122.0)).draggable(true)),new LatLng(37.35, -122.0));
-        newRegionCultivo.put(mMap.addMarker(new MarkerOptions().position(new LatLng(37.45, -122.2)).draggable(true)),new LatLng(37.35, -122.0));
-        newRegionCultivo.put(mMap.addMarker(new MarkerOptions().position(new LatLng(37.35, -122.0)).draggable(true)),new LatLng(37.35, -122.0));
+        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.35, -122.0)).draggable(true)));
+        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.45, -122.0)).draggable(true)));
+        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.45, -122.2)).draggable(true)));
+        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.39, -122.0)).draggable(true)));
         poligono_mod_Options.add(new LatLng(37.35, -122.0),
                 new LatLng(37.45, -122.0),
                 new LatLng(37.45, -122.2),
@@ -311,27 +348,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMarkerDragStart(Marker arg0) {
                 // TODO Auto-generated method stub
-                Log.d("System out", "onMarkerDragStart..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
-                poligono_mod_Options.getPoints().remove(arg0.getPosition());
+                int eliminado = 0;
+                for (int i = 0; i < newRegionCultivo.size(); i++) {
+                    // if (MedidasManager.distance(puntos.get(i).latitude, puntos.get(i).longitude, arg0.getPosition().latitude, arg0.getPosition().longitude) < 0.000000001) { // if distance < 0.1 miles we take locations as equal
+                    if (newRegionCultivo.get(i).getId().equalsIgnoreCase(arg0.getId())) {
+                        eliminado = i;
+                    }
+                }
+                newRegionCultivo.remove(eliminado);
+
+            }
+            @Override
+            public void onMarkerDrag(Marker marker) {
 
             }
 
-            @SuppressWarnings("unchecked")
             @Override
-            public void onMarkerDragEnd(Marker arg0) {
-                String a  = arg0.getId();
+            public void onMarkerDragEnd(Marker marker) {
                 poligono_modificable.remove();
-                poligono_mod_Options.add(arg0.getPosition());
+                poligono_mod_Options.getPoints().clear();
+                String id = marker.getId();
+                id = id.replace("m", "");
+
+                newRegionCultivo.add(Integer.parseInt(id),marker);
+                for (int i=0;i<newRegionCultivo.size();i++){
+                    poligono_mod_Options.add(newRegionCultivo.get(i).getPosition());
+                }
 
                 poligono_modificable=mMap.addPolygon(poligono_mod_Options);
-
             }
 
-            @Override
-            public void onMarkerDrag(Marker arg0) {
-                // TODO Auto-generated method stub
-                Log.i("System out", "onMarkerDrag...");
-            }
+
+
         });
     }
 
@@ -365,6 +413,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.localizacion_actual) {
+           if (localizacion_actual != null){
+               CameraUpdate location =  CameraUpdateFactory.newLatLng(new LatLng(localizacion_actual.getLatitude(),localizacion_actual.getLongitude()));
+               mMap.animateCamera(location);
+           }
+           else{
+               Toast.makeText(this,"No se ha podido obtener la localización en este momento",Toast.LENGTH_SHORT).show();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
 
@@ -380,9 +445,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onOpcionesCultivosClicked(int position) {
         //TODO manage items botomMenu
         if (position == 0){
+            mMap.clear();
+            configurar_mapa_inspeccion();
             manageInspeccion();
         }
         else{
+            mMap.clear();
+            //TODO falta manejar el menu y el proceso de crear un cultivo
             crear_cultivo();
         }
     }
@@ -395,14 +464,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         //mostrar pasos
         pasosView.setVisibility(View.VISIBLE);
+        fab.hide();
         //
-        managePosicionActualEnCultivo();
+        managePasosView();
 
     }
 
-    public void managePosicionActualEnCultivo(){
-        fab.hide();
-        //TODO en background leer los puntos de la region GeoJson
+    public void managePasosView(){
+        //paso 1. Setear los datos correspondientes al cultivo seleccionado
+
+
+
+        //paso 2
+
+
+        //paso 3
+
 
     }
 
@@ -420,6 +497,7 @@ private LocationListener locationListener = new LocationListener() {
             points.add(newPoint);
             polygon.setPoints(points);
             */
+            localizacion_actual = location;
         }
 
     }
@@ -450,49 +528,5 @@ private LocationListener locationListener = new LocationListener() {
         return true;
     }
 
-/*
-@Override
-public void onMapClick(LatLng latLng) {
-    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-    markerClicked = false;
-}
 
-
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Localizacion actual"));
-        LatLng newPoint = latLng;
-        List<LatLng> points = polygon.getPoints();
-        points.add(newPoint);
-        poligono_modificable.setPoints(points);
-
-        markerClicked = false;
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        if(markerClicked){
-
-            if(poligono_modificable != null){
-                poligono_modificable.remove();
-                poligono_modificable = null;
-            }
-
-            poligono_mod_Options.add(marker.getPosition());
-            poligono_mod_Options.strokeColor(Color.RED);
-            poligono_mod_Options.fillColor(Color.BLUE);
-            poligono_modificable = mMap.addPolygon(poligono_mod_Options);
-        }else{
-            if(poligono_modificable != null){
-                poligono_modificable.remove();
-                poligono_modificable = null;
-            }
-
-            poligono_mod_Options = new PolygonOptions().add(marker.getPosition());
-            markerClicked = true;
-        }
-
-        return true;
-    }
-    */
 }

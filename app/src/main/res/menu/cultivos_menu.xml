@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_name"
+        android:id="@+id/localizacion_actual"
         android:icon="@drawable/ic_my_location_black_24dp"
         android:orderInCategory="0"
-        android:title="Text to be seen by user"
+        android:title="Localización actual"
         app:showAsAction="always" />
 
 </menu>
