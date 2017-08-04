@@ -85,6 +85,29 @@ public class PasosView extends LinearLayout {
         }
     }
 
+    public void anterior(){
+        paso_actual--;
+
+        if (paso_actual == 0){
+            //bola anterior Estado visitada
+            bola1.setBackground(getResources().getDrawable(R.drawable.shape_border));
+            bola1.setImageResource(android.R.color.transparent);
+            //bola actual
+            bola2.setBackground(getResources().getDrawable(R.drawable.shape_circle_gris));
+            //fondo como visitado
+            paso2_background.setBackgroundColor(getResources().getColor(R.color.base));
+
+        }
+        else if(paso_actual == 1){
+            //bola anterior Estado visitada
+            bola2.setBackground(getResources().getDrawable(R.drawable.shape_border));
+            bola2.setImageResource(android.R.color.transparent);
+            //bola actual
+            bola3.setBackground(getResources().getDrawable(R.drawable.shape_circle_gris));
+            //fondo como visitado
+            paso3_background.setBackgroundColor(getResources().getColor(R.color.base));
+        }
+    }
     public void changecheck(boolean activar, int posicion){
         if (posicion == 0){
             //bola anterior Estado visitada

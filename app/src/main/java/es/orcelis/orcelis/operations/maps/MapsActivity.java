@@ -66,11 +66,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PasosView pasosView;
 
     private LinearLayout trip_menu_botom;
-    private ImageView next_button;
 
     private FloatingActionButton fab;
     private OpcionesCultivosListDialogFragment opcionesCultivos;
     Toolbar tb;
+
+    public static final int PASO1 = 0;
+    public static final int PASO2 = 1;
+    public static final int PASO3 = 2;
 
     //es necesario guardar en el shared preference las siguientes variables de estado
 
@@ -86,15 +89,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Location localizacion_actual;
 
-
+    BottomSheetBehavior button_sheet_behavior;
     //-------------------------------------
-    LinearLayout btn_anterior_paso;
+
     TextView nombre_cultivo_seleccionado;
     LinearLayout btn_finalizar_pasos;
     LinearLayout btn_siguiente_paso;
     RecyclerView rv_listado_plagas;
     LinearLayout btn_add_new_plaga;
 
+    LinearLayout btn_anterior_pasos;
 
 
 
@@ -132,13 +136,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         initListener();
 
 
-        final BottomSheetBehavior bsb = BottomSheetBehavior.from(trip_menu_botom);
+        button_sheet_behavior = BottomSheetBehavior.from(trip_menu_botom);
 
         trip_menu_botom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
+                button_sheet_behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
 
@@ -154,11 +158,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void initViews(){
         pasosView = (PasosView)findViewById(R.id.pasosView);
         trip_menu_botom = (LinearLayout)findViewById(R.id.include_menu_bottom);
-        next_button = (ImageView)findViewById(R.id.next_button);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         opcionesCultivos = OpcionesCultivosListDialogFragment.newInstance();
 
-        btn_anterior_paso = (LinearLayout) findViewById(R.id.bnt_anterior_paso);
+        btn_anterior_pasos = (LinearLayout) findViewById(R.id.bnt_anterior_paso);
         nombre_cultivo_seleccionado = (TextView) findViewById(R.id.tv_cultivo_seleccionado);
         btn_finalizar_pasos = (LinearLayout)findViewById(R.id.btn_finalizar_pasos);
         btn_siguiente_paso = (LinearLayout)findViewById(R.id.btn_siguiente_paso);
@@ -180,10 +183,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         pasosView.setListenerClose(this);
         pasosView.setVisibility(View.GONE);
 
-        next_button.setOnClickListener(this);
         fab.setOnClickListener(this);
 
-        btn_anterior_paso.setOnClickListener(this);
+        btn_anterior_pasos.setOnClickListener(this);
         btn_finalizar_pasos.setOnClickListener(this);
         btn_siguiente_paso.setOnClickListener(this);
         btn_add_new_plaga.setOnClickListener(this);
@@ -195,12 +197,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         //TODO ordenar todo en funciones helper de configuracion de cada parte SetUpMapIfNeed
         if(mMap == null) {
-            //TODO parte de configuracion visual del mapa
+            // parte de configuracion visual del mapa
             mMap = googleMap;
-
             googleMap.setBuildingsEnabled(true);
-
-
             try {
                 boolean success = googleMap.setMapStyle(
                         MapStyleOptions.loadRawResourceStyle(
@@ -311,16 +310,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             geoJsonFeature.getPolygonStyle().setFillColor(getResources().getColor(R.color.black));
 
                         }
-                        pasosView.changecheck(true, 0);
+                        pasosView.setVisibility(View.VISIBLE);
+                        pasosView.changecheck(true, PASO1);
                         trip_menu_botom.setVisibility(View.VISIBLE);
+                        //paso 1
+
                     }
-                    /**
-                     * Manejar else para contemplar pulsacion fuera del mapa, deseleccionar zona y ocultar menu inferior
-                     * Solo cuando se esté en el PASO 1
-                     */
 
                 }
             });
+
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    if (pasosView.getPasoActual() == PASO1) {
+                        pasosView.changecheck(false, PASO1);
+                        trip_menu_botom.setVisibility(View.GONE);
+                    }
+
+                }
+            });
+
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -369,8 +379,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 poligono_mod_Options.getPoints().clear();
                 String id = marker.getId();
                 id = id.replace("m", "");
-
-                newRegionCultivo.add(Integer.parseInt(id),marker);
+                if (Integer.parseInt(id) <= 4){
+                    newRegionCultivo.add(Integer.parseInt(id), marker);
+                }
+                else{
+                    //si el id que se obtiene es mayor al que deberia,se aniade al final
+                    newRegionCultivo.add(marker);
+                }
                 for (int i=0;i<newRegionCultivo.size();i++){
                     poligono_mod_Options.add(newRegionCultivo.get(i).getPosition());
                 }
@@ -387,6 +402,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_close_pasos:
+                //ocultar pasos y mostrar el menu inicial
                 pasosView.setVisibility(View.GONE);
                 trip_menu_botom.setVisibility(View.GONE);
                 if (getSupportActionBar() != null){
@@ -394,9 +410,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 fab.show();
                 break;
-            case R.id.next_button:
+            case R.id.btn_siguiente_paso:
                 pasosView.siguiente();
-                //trip_menu_botom.setVisibility(View.GONE);
+                managePasosView();
+                break;
+            case R.id.bnt_anterior_paso:
+                pasosView.anterior();
+                managePasosView();
                 break;
             case R.id.fab:
                 opcionesCultivos.show(getSupportFragmentManager(), OpcionesCultivosListDialogFragment.TAG);
@@ -436,9 +456,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    public void manageToolbars(){
 
-    }
 
 
     @Override
@@ -465,21 +483,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //mostrar pasos
         pasosView.setVisibility(View.VISIBLE);
         fab.hide();
-        //
-        managePasosView();
+
 
     }
 
     public void managePasosView(){
-        //paso 1. Setear los datos correspondientes al cultivo seleccionado
+        // Setear los datos correspondientes al cultivo seleccionado
 
+        switch (pasosView.getPasoActual()){
+            case PASO1:
+                btn_anterior_pasos.setVisibility(View.INVISIBLE);
+                btn_siguiente_paso.setVisibility(View.VISIBLE);
+                btn_finalizar_pasos.setVisibility(View.GONE);
+                break;
+            case PASO2:
+                btn_anterior_pasos.setVisibility(View.VISIBLE);
+                btn_siguiente_paso.setVisibility(View.GONE);
+                btn_finalizar_pasos.setVisibility(View.VISIBLE);
 
+                break;
+            case PASO3:
 
-        //paso 2
-
-
-        //paso 3
-
+                break;
+            default:
+                break;
+        }
 
     }
 
