@@ -42,12 +42,21 @@ public class ContractPlagas {
 
     public static final int CABECERAS_TIPO_CULTIVO = 100;
     public static final int CABECERAS_TIPO_CULTIVO_ID = 101;
+    public static final int CABECERAS_CULTIVO = 200;
+    public static final int CABECERAS_CULTIVO_ID = 201;
+    public static final int CABECERAS_USUARIO = 200;
+    public static final int CABECERAS_USUARIO_ID = 201;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        uriMatcher.addURI(AUTORIDAD, "tipo_cultivo", CABECERAS_TIPO_CULTIVO);
-        uriMatcher.addURI(AUTORIDAD, "tipo_cultivo/*", CABECERAS_TIPO_CULTIVO_ID);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.TIPOCULTIVO+"/", CABECERAS_TIPO_CULTIVO);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.TIPOCULTIVO+"/*", CABECERAS_TIPO_CULTIVO_ID);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.CULTIVO, CABECERAS_CULTIVO);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.CULTIVO+"/*", CABECERAS_CULTIVO_ID);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.USUARIO, CABECERAS_USUARIO);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.USUARIO+"/*", CABECERAS_USUARIO_ID);
+
     }
 
     public static final String BASE_CONTENIDOS = "plagas.";
@@ -87,6 +96,7 @@ public class ContractPlagas {
     interface ColumnasCultivo extends BaseColumns{
         String ID = "id";
         String GEOJSON = "geojson";
+        String NOMBRE = "nombre";
     }
 
     interface ColumnasPuntos extends BaseColumns{

@@ -1,6 +1,7 @@
 package es.orcelis.orcelis.operations.maps;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -51,6 +53,9 @@ import java.util.List;
 import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.models.Cultivo;
 import es.orcelis.orcelis.operations.cultivos.OpcionesCultivosListDialogFragment;
+import es.orcelis.orcelis.operations.cultivos.add_plaga.AddPlagaForm;
+import es.orcelis.orcelis.operations.cultivos.crear_cultivo.RecargarMapa;
+import es.orcelis.orcelis.operations.cultivos.crear_cultivo.UIHelper;
 import es.orcelis.orcelis.utils.DialogManager;
 import es.orcelis.orcelis.utils.MedidasManager;
 import es.orcelis.orcelis.utils.views.PasosView;
@@ -59,7 +64,7 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener,OpcionesCultivosListDialogFragment.Listener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener,OpcionesCultivosListDialogFragment.Listener,RecargarMapa {
 
     private GoogleMap mMap;
 
@@ -71,25 +76,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private OpcionesCultivosListDialogFragment opcionesCultivos;
     Toolbar tb;
 
+    public static int ZOOM = 13;
+
     public static final int PASO1 = 0;
     public static final int PASO2 = 1;
     public static final int PASO3 = 2;
 
-    //es necesario guardar en el shared preference las siguientes variables de estado
-
-    //manejo de poligonos
-    //PolylineOptions rectOptions;
-    //Polyline polygon;
-    boolean markerClicked;
-
-    Polygon poligono_modificable;
-    PolygonOptions poligono_mod_Options;
-
-    List<Marker> newRegionCultivo;
-
     Location localizacion_actual;
 
     BottomSheetBehavior button_sheet_behavior;
+
+    Marker ubicacion_actual_marker;
     //-------------------------------------
 
     TextView nombre_cultivo_seleccionado;
@@ -100,6 +97,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LinearLayout btn_anterior_pasos;
 
+    TextView titulo_cultivo_seleccionado;
+    TextView tv_cultivo_seleccionado;
 
 
     @Override
@@ -114,7 +113,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             getSupportActionBar().setTitle(getString(R.string.title_cultivos));
         }
 
-       DialogManager.getDialogDefault(this,getString(R.string.cargando));
 
     }
 
@@ -168,6 +166,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         rv_listado_plagas = (RecyclerView) findViewById(R.id.recycler_listado_plagas);
         btn_add_new_plaga = (LinearLayout)findViewById(R.id.btn_add_new_plaga);
 
+        titulo_cultivo_seleccionado = (TextView)findViewById(R.id.title_cultivo_seleccionado);
+        tv_cultivo_seleccionado = (TextView)findViewById(R.id.tv_cultivo_seleccionado);
 
     }
 
@@ -222,14 +222,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //comprobacion de google play services
 
         if (isGooglePlayServicesAvailable(this)){
+            /*
             Toast.makeText(getApplicationContext(),
                     "isGooglePlayServicesAvailable SUCCESS",
                     Toast.LENGTH_LONG).show();
+                    */
         }
         else{
+            /*
             Toast.makeText(getApplicationContext(),
                     "isGooglePlayServicesAvailable FAIL",
                     Toast.LENGTH_LONG).show();
+                    */
         }
         //poner esto en la pantalla anterior para checkear permiso
         if ( Build.VERSION.SDK_INT >= 23) {
@@ -263,23 +267,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-        //-------------------
-        /*
-        rectOptions = new PolylineOptions();
-
-        rectOptions.add(new LatLng(37.35, -122.0),
-                new LatLng(37.45, -122.0),
-                new LatLng(37.45, -122.2),
-                new LatLng(37.35, -122.2),
-                new LatLng(37.35, -122.0));
-        polygon = mMap.addPolyline(rectOptions);
-*/
-
-        //mMap.setOnMapClickListener(this);
-       // mMap.setOnMapLongClickListener(this);
-        //mMap.setOnMarkerClickListener(this);
-        markerClicked = false;
-
 
 
 
@@ -289,7 +276,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void configurar_mapa_inspeccion(){
         LatLng orihuela = new LatLng(38.0654185, -0.8743761);
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
-                orihuela, 10);
+                orihuela, ZOOM);
         mMap.animateCamera(location);
         try {
             //TODO hacerlo en una Asyntask
@@ -313,7 +300,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         pasosView.setVisibility(View.VISIBLE);
                         pasosView.changecheck(true, PASO1);
                         trip_menu_botom.setVisibility(View.VISIBLE);
-                        //paso 1
+                        tv_cultivo_seleccionado.setText(geoJsonFeature.getProperty("letter"));
 
                     }
 
@@ -337,72 +324,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //TODO manage lifeCicle maps
     }
 
-    public void crear_cultivo(){
-        newRegionCultivo = new ArrayList<>();
-        poligono_mod_Options = new PolygonOptions();
 
-        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.35, -122.0)).draggable(true)));
-        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.45, -122.0)).draggable(true)));
-        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.45, -122.2)).draggable(true)));
-        newRegionCultivo.add(mMap.addMarker(new MarkerOptions().position(new LatLng(37.39, -122.0)).draggable(true)));
-        poligono_mod_Options.add(new LatLng(37.35, -122.0),
-                new LatLng(37.45, -122.0),
-                new LatLng(37.45, -122.2),
-                new LatLng(37.39, -122.0));
-        poligono_mod_Options.strokeColor(Color.RED);
-        poligono_mod_Options.fillColor(Color.WHITE);
-
-        poligono_modificable = mMap.addPolygon(poligono_mod_Options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.35, -122.0)));
-        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-            @Override
-            public void onMarkerDragStart(Marker arg0) {
-                // TODO Auto-generated method stub
-                int eliminado = 0;
-                for (int i = 0; i < newRegionCultivo.size(); i++) {
-                    // if (MedidasManager.distance(puntos.get(i).latitude, puntos.get(i).longitude, arg0.getPosition().latitude, arg0.getPosition().longitude) < 0.000000001) { // if distance < 0.1 miles we take locations as equal
-                    if (newRegionCultivo.get(i).getId().equalsIgnoreCase(arg0.getId())) {
-                        eliminado = i;
-                    }
-                }
-                newRegionCultivo.remove(eliminado);
-
-            }
-            @Override
-            public void onMarkerDrag(Marker marker) {
-
-            }
-
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-                poligono_modificable.remove();
-                poligono_mod_Options.getPoints().clear();
-                String id = marker.getId();
-                id = id.replace("m", "");
-                if (Integer.parseInt(id) <= 4){
-                    newRegionCultivo.add(Integer.parseInt(id), marker);
-                }
-                else{
-                    //si el id que se obtiene es mayor al que deberia,se aniade al final
-                    newRegionCultivo.add(marker);
-                }
-                for (int i=0;i<newRegionCultivo.size();i++){
-                    poligono_mod_Options.add(newRegionCultivo.get(i).getPosition());
-                }
-
-                poligono_modificable=mMap.addPolygon(poligono_mod_Options);
-            }
-
-
-
-        });
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_close_pasos:
-                //ocultar pasos y mostrar el menu inicial
+                //Resetear pasos, ocultar y mostrar el menu inicial
+                pasosView.resetear();
                 pasosView.setVisibility(View.GONE);
                 trip_menu_botom.setVisibility(View.GONE);
                 if (getSupportActionBar() != null){
@@ -411,8 +340,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 fab.show();
                 break;
             case R.id.btn_siguiente_paso:
-                pasosView.siguiente();
-                managePasosView();
+                if (tv_cultivo_seleccionado.getText().toString().equalsIgnoreCase("")){
+                    DialogManager.getTwoButtonAlertDialog(this,getString(R.string.tv_campo_obligatorio),getString(R.string.tv_obligatorio_select_cultivo),null,null,null,null);
+                }
+                else{
+                    pasosView.siguiente();
+                    managePasosView();
+                }
                 break;
             case R.id.bnt_anterior_paso:
                 pasosView.anterior();
@@ -421,13 +355,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.fab:
                 opcionesCultivos.show(getSupportFragmentManager(), OpcionesCultivosListDialogFragment.TAG);
                 break;
+            case R.id.btn_add_new_plaga:
+                Intent intent = new Intent(this, AddPlagaForm.class);
+                startActivity(intent);
+                break;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //TODO
         getMenuInflater().inflate(R.menu.cultivos_menu, menu);
         return true;
     }
@@ -439,6 +375,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //noinspection SimplifiableIfStatement
         if (id == R.id.localizacion_actual) {
            if (localizacion_actual != null){
+               if (ubicacion_actual_marker != null) {
+                   ubicacion_actual_marker.remove();
+               }
+               MarkerOptions markerOptions = new MarkerOptions();
+               markerOptions.position(new LatLng(localizacion_actual.getLatitude(),
+                       localizacion_actual.getLongitude()));
+                markerOptions.draggable(false);
+               markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ubicacion_actual_36));
+               ubicacion_actual_marker = mMap.addMarker(markerOptions);
                CameraUpdate location =  CameraUpdateFactory.newLatLng(new LatLng(localizacion_actual.getLatitude(),localizacion_actual.getLongitude()));
                mMap.animateCamera(location);
            }
@@ -456,9 +401,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
-
-
     @Override
     public void onOpcionesCultivosClicked(int position) {
         //TODO manage items botomMenu
@@ -469,8 +411,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else{
             mMap.clear();
-            //TODO falta manejar el menu y el proceso de crear un cultivo
-            crear_cultivo();
+            fab.hide();
+            UIHelper crear_cultivo_helper = new UIHelper(this,mMap,this);
+            crear_cultivo_helper.crear_cultivo(localizacion_actual,fab);
         }
     }
 
@@ -495,11 +438,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 btn_anterior_pasos.setVisibility(View.INVISIBLE);
                 btn_siguiente_paso.setVisibility(View.VISIBLE);
                 btn_finalizar_pasos.setVisibility(View.GONE);
+                btn_add_new_plaga.setVisibility(View.GONE);
+                titulo_cultivo_seleccionado.setText(R.string.tv_eleccion_cultivo);
+                tv_cultivo_seleccionado.setText("");
+
+
                 break;
             case PASO2:
                 btn_anterior_pasos.setVisibility(View.VISIBLE);
                 btn_siguiente_paso.setVisibility(View.GONE);
                 btn_finalizar_pasos.setVisibility(View.VISIBLE);
+                btn_add_new_plaga.setVisibility(View.VISIBLE);
+                titulo_cultivo_seleccionado.setText(R.string.tv_cultivo_seleccionado);
+
 
                 break;
             case PASO3:
@@ -556,5 +507,8 @@ private LocationListener locationListener = new LocationListener() {
         return true;
     }
 
-
+    @Override
+    public void iniciar() {
+        configurar_mapa_inspeccion();
+    }
 }

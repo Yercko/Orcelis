@@ -45,10 +45,16 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
                 Tablas.USUARIO, ContractPlagas.Usuario._ID,
                 ContractPlagas.Usuario.ID, ContractPlagas.Usuario.EMAIL, ContractPlagas.Usuario.PASSWORD, ContractPlagas.Usuario.TELEFONO,
                 ContractPlagas.Usuario._UUID,ContractPlagas.Usuario.FECHA_FIN_USO));
+
         db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "%s TEXT NOT NULL,%s TEXT NOT NULL )",
-                Tablas.TIPOCULTIVO, BaseColumns._ID,
+                Tablas.TIPOCULTIVO, ContractPlagas.TipoCultivo._ID,
                 ContractPlagas.TipoCultivo.ID, ContractPlagas.TipoCultivo.NOMBRE));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.CULTIVO, ContractPlagas.Cultivo._ID,
+                ContractPlagas.Cultivo.NOMBRE, ContractPlagas.Cultivo.GEOJSON));
 
     }
 
@@ -57,7 +63,7 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.USUARIO);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.TIPOCULTIVO);
-          /*
+
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.EXPLOTACION);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.CULTIVO);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOS);
@@ -71,7 +77,7 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.TIPOCULTIVO_PLAGA);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.PAIS);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.REGION);
-*/
+
         onCreate(db);
     }
 

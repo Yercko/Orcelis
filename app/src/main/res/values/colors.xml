@@ -28,6 +28,8 @@
     <color name="gris_semitransparente">#68000000</color>
     <color name="gris_claro_semitransparente">#778f5f00</color>
 
+    <color name="color_cultivo">#9815ff00</color>
+
     <color name="accent_oscuro">#af7e1f</color>
     <color name="accent_claro">#fdb52b</color>
 
@@ -36,7 +38,7 @@
     <color name="rojo_claro">#b96d76</color>
 
     <color name="transparente">#00ffffff</color>
-    <color name="loading_background">#90FFFFFF</color>
+    <color name="loading_background">#31ffffff</color>
 
     <color name="verde_chillon">#00e700</color>
 

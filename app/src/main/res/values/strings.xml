@@ -46,12 +46,21 @@
     <string name="tv_cultivo_seleccionado">Cultivo seleccionado: </string>
     <string name="cargando">Cargando…</string>
     <string name="title_cultivos">Cultivos</string>
-    <string name="add_nueva_npta">Añadir nueva plaga</string>
+    <string name="add_nueva_plaga">Añadir nueva plaga</string>
+    <string name="tv_obligatorio_select_cultivo">Por favor, seleccione un cultivo</string>
+
 
     <!-- Añadir nota -->
     <string name="tv_add_photo">Agregue una foto</string>
     <string name="tv_elije_plaga">Elija la plaga</string>
     <string name="tv_utilizar_localizacion">Usando la localización actual…</string>
     <string name="tv_agregue_fotos">Agregue una nota…</string>
+
+    <string name="tv_campo_obligatorio">Campo obligatorio</string>
+    <string name="btn_ok">OK</string>
+
+    <!-- Crear cultivo -->
+
+    <string name="tv_crear_title_cultivo">Nombre del cultivo</string>
 
 </resources>

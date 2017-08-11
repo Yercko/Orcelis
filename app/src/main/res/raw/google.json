@@ -145,7 +145,8 @@
     {
       "type": "Feature",
       "properties": {
-        "stroke": "#555555"
+        "stroke": "#559955",
+        "letter": "Cultivo de Orihuela"
       },
       "geometry": {
         "type": "Polygon",

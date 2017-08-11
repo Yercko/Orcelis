@@ -2,6 +2,7 @@ package es.orcelis.orcelis.data;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +11,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import es.orcelis.orcelis.provider.ContractParaUsuarios;
+
+import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_CULTIVO;
+import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_TIPO_CULTIVO;
 
 /**
  * Created by ymontero on 09/05/2017.
@@ -62,7 +66,7 @@ public class PlagasProvider extends ContentProvider{
     @Override
     public String getType(@NonNull Uri uri) {
         switch (ContractPlagas.uriMatcher.match(uri)) {
-            case ContractPlagas.CABECERAS_TIPO_CULTIVO:
+            case CABECERAS_TIPO_CULTIVO:
                 return ContractPlagas.generarMime("tipo_cultivo");
             default:
                 throw new UnsupportedOperationException("Uri desconocida =>" + uri);
@@ -73,9 +77,25 @@ public class PlagasProvider extends ContentProvider{
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         SQLiteDatabase db = datos.getDb();
-        db.insertOrThrow(BaseDatosPlagas.Tablas.TIPOCULTIVO, null, values);
-        //uri.buildUpon().appendPath("1").build();
-        notificarCambio(uri);
+        Uri _uri = null;
+        int match = ContractPlagas.uriMatcher.match(uri);
+        switch (match){
+            case CABECERAS_CULTIVO:
+                long _ID1 = db.insert(BaseDatosPlagas.Tablas.CULTIVO, "", values);
+                //---if added successfully---
+                if (_ID1 > 0) {
+                    _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Cultivo, _ID1);
+                    getContext().getContentResolver().notifyChange(_uri, null);
+                    notificarCambio(uri);
+                }
+                break;
+            case CABECERAS_TIPO_CULTIVO:
+                db.insertOrThrow(BaseDatosPlagas.Tablas.TIPOCULTIVO, null, values);
+                notificarCambio(uri);
+                break;
+        }
+
+
         //TODO crear cabecera pedido
         return uri;
     }

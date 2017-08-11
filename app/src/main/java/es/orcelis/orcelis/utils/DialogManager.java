@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.ContextCompat;
@@ -153,6 +154,70 @@ public class DialogManager {
         finally {
             progressDialog = null;
         }
+    }
+
+    /**
+     * Muestra un dialogo de alerta
+     * @param context - contexto de la aplicacion
+     * @param title - titulo del dialogo
+     * @param mensaje - mensaje del dialogo
+     * @param buttonAcceptTitle - titulo del boton positivo. Si viene a null no se muestra boton
+     * @param buttonCancelTittle - titulo del boton negativo. Si viene a null no se muestra boton
+     * @param buttonAcceptListener - listener del boton positivo. Si viene a null no se meustra boton
+     * @param buttonCancelListener - listener del boton negativo. Si viene a null no se meustra boton
+     */
+    public static void getTwoButtonAlertDialog(final Context context, String title, String mensaje, String buttonAcceptTitle, String buttonCancelTittle, DialogInterface.OnClickListener buttonAcceptListener, DialogInterface.OnClickListener buttonCancelListener) {
+        DialogManager.hideCurrentDialog();
+
+        // Configuramos el dialogo
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(mensaje);
+        alertDialog.setCancelable(false);
+
+        if (buttonAcceptTitle == null) {
+            buttonAcceptTitle = context. getString(R.string.btn_ok);
+        }
+
+        if (buttonAcceptListener != null) {
+            alertDialog.setPositiveButton(buttonAcceptTitle, buttonAcceptListener);
+        } else {
+
+            alertDialog.setPositiveButton(buttonAcceptTitle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        if (buttonCancelListener != null) {
+            alertDialog.setNegativeButton(buttonCancelTittle, buttonCancelListener);
+        } else {
+            if (buttonCancelTittle != null) {
+                alertDialog.setNegativeButton(buttonCancelTittle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        }
+        // Mostramos la alerta en el hilo principal
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                // Mostramos la alerta
+                try{
+                    currentAlertDialog = alertDialog.show();
+                }
+                catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
 }

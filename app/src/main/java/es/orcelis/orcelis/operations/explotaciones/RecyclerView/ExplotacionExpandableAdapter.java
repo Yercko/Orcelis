@@ -1,5 +1,6 @@
 package es.orcelis.orcelis.operations.explotaciones.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.operations.maps.MapsActivity;
+import es.orcelis.orcelis.utils.DialogManager;
 
 /**
  * Created by yercko on 12/05/2017.
@@ -21,9 +23,11 @@ import es.orcelis.orcelis.operations.maps.MapsActivity;
 
 public class ExplotacionExpandableAdapter extends ExpandableRecyclerAdapter<ExplotacionParentViewHolder, ExplotacionChildViewHolder> {
     private LayoutInflater mInflater;
+    private Activity contexto;
 
-    public ExplotacionExpandableAdapter(Context context, List<ParentObject> parentItemList) {
+    public ExplotacionExpandableAdapter(Activity context, List<ParentObject> parentItemList) {
         super(context, parentItemList);
+        contexto = context;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -39,6 +43,8 @@ public class ExplotacionExpandableAdapter extends ExpandableRecyclerAdapter<Expl
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DialogManager.getDialogDefault(contexto,viewGroup.getContext().getString(R.string.cargando));
+
                 Intent intent = new Intent(viewGroup.getContext(), MapsActivity.class);
                 viewGroup.getContext().startActivity(intent);
             }

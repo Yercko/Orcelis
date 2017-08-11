@@ -95,7 +95,7 @@ public class PasosView extends LinearLayout {
             //bola actual
             bola2.setBackground(getResources().getDrawable(R.drawable.shape_circle_gris));
             //fondo como visitado
-            paso2_background.setBackgroundColor(getResources().getColor(R.color.base));
+            paso2_background.setBackgroundColor(getResources().getColor(R.color.iron));
 
         }
         else if(paso_actual == 1){
@@ -105,18 +105,31 @@ public class PasosView extends LinearLayout {
             //bola actual
             bola3.setBackground(getResources().getDrawable(R.drawable.shape_circle_gris));
             //fondo como visitado
-            paso3_background.setBackgroundColor(getResources().getColor(R.color.base));
+            paso3_background.setBackgroundColor(getResources().getColor(R.color.iron));
         }
     }
     public void changecheck(boolean activar, int posicion){
-        if (posicion == 0){
-            //bola anterior Estado visitada
-            bola1.setBackground(getResources().getDrawable(R.drawable.shape_circle));
-            bola1.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_white_24dp));
-        } else if (posicion == 1) {
-            //bola anterior Estado visitada
-            bola2.setBackground(getResources().getDrawable(R.drawable.shape_circle));
-            bola2.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_white_24dp));
+        if(activar) {
+            if (posicion == 0) {
+                //bola anterior Estado visitada
+                bola1.setBackground(getResources().getDrawable(R.drawable.shape_circle));
+                bola1.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_white_24dp));
+            } else if (posicion == 1) {
+                //bola anterior Estado visitada
+                bola2.setBackground(getResources().getDrawable(R.drawable.shape_circle));
+                bola2.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_white_24dp));
+            }
+        }
+        else{
+            if (posicion == 0) {
+                //bola anterior Estado visitada
+                bola1.setBackground(getResources().getDrawable(R.drawable.shape_border));
+                bola1.setImageResource(android.R.color.transparent);
+            } else if (posicion == 1) {
+                //bola anterior Estado visitada
+                bola2.setBackground(getResources().getDrawable(R.drawable.shape_border));
+                bola2.setImageResource(android.R.color.transparent);
+            }
         }
     }
 
@@ -124,6 +137,14 @@ public class PasosView extends LinearLayout {
         close_pasos_seguir.setOnClickListener(onClickListener);
     }
 
+    public void resetear(){
+        for (int i=0;i<3;i++){
+            if (paso_actual > 0){
+                changecheck(false, paso_actual);
+                anterior();
+            }
+        }
+    }
 
     public int getPasoActual(){
         return paso_actual;

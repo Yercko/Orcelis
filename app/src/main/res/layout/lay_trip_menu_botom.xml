@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="@dimen/padding_content"
-                android:text="@string/add_nueva_npta"
+                android:text="@string/add_nueva_plaga"
                 android:textColor="@color/oil"
                 android:textSize="14sp" />
         </LinearLayout>
