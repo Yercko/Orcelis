@@ -107,7 +107,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".operations.cultivos.add_plaga.AddPlagaForm"></activity>
+        <activity android:name=".operations.cultivos.add_plaga.AddPlagaFormActivity"></activity>
     </application>
 
 </manifest>

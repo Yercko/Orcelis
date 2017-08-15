@@ -3,7 +3,6 @@ package es.orcelis.orcelis.operations.maps;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,28 +34,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.geojson.GeoJsonFeature;
 import com.google.maps.android.geojson.GeoJsonLayer;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import es.orcelis.orcelis.R;
-import es.orcelis.orcelis.models.Cultivo;
 import es.orcelis.orcelis.operations.cultivos.OpcionesCultivosListDialogFragment;
-import es.orcelis.orcelis.operations.cultivos.add_plaga.AddPlagaForm;
+import es.orcelis.orcelis.operations.cultivos.add_plaga.AddPlagaFormActivity;
 import es.orcelis.orcelis.operations.cultivos.crear_cultivo.RecargarMapa;
 import es.orcelis.orcelis.operations.cultivos.crear_cultivo.UIHelper;
 import es.orcelis.orcelis.utils.DialogManager;
-import es.orcelis.orcelis.utils.MedidasManager;
 import es.orcelis.orcelis.utils.views.PasosView;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
@@ -99,6 +88,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     TextView titulo_cultivo_seleccionado;
     TextView tv_cultivo_seleccionado;
+
+    private static final int REQUEST_CODE_EXAMPLE = 0x9345;
 
 
     @Override
@@ -173,6 +164,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void initValues(){
         //TODO manage Data from Bundle
+            //volver de ADD_NOTA y mostrar el menu superior
 
 
         //TODO manage seguir con el ultimo trip sin finalizar, en caso de que no,finalizar
@@ -181,7 +173,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void initListener(){
         pasosView.setOnDragListener(null);
         pasosView.setListenerClose(this);
-        pasosView.setVisibility(View.GONE);
 
         fab.setOnClickListener(this);
 
@@ -356,10 +347,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 opcionesCultivos.show(getSupportFragmentManager(), OpcionesCultivosListDialogFragment.TAG);
                 break;
             case R.id.btn_add_new_plaga:
-                Intent intent = new Intent(this, AddPlagaForm.class);
-                startActivity(intent);
+                Intent intent = new Intent(this, AddPlagaFormActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_EXAMPLE);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == REQUEST_CODE_EXAMPLE) {
+                if (resultCode == Activity.RESULT_OK) {
+                    pasosView.setVisibility(View.VISIBLE);
+                }
+                else {
+
+                }
+            }
     }
 
     @Override
