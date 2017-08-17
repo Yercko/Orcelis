@@ -38,18 +38,18 @@ public class PlagasProvider extends ContentProvider{
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         // Comparar Uri
         int match = ContractPlagas.uriMatcher.match(uri);
-
-        Cursor c;
-
-        c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.proyTipoCultivo,
-                selection, selectionArgs,
-                null, null, sortOrder);
-        c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);
+        Cursor c = null;
 
         switch (match) {
+            case CABECERAS_CULTIVO:
+                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.consultarUsuario,
+                        selection, selectionArgs,
+                        null, null, sortOrder);
+                c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);
+                break;
             case ContractParaUsuarios.ALLROWS:
                 // Consultando todos los registros
-                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.proyTipoCultivo,
+                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.consultarCultivos,
                         selection, selectionArgs,
                         null, null, sortOrder);
                 c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);

@@ -27,37 +27,25 @@ public final class OpBaseDatosHelper {
         return instancia;
     }
 
-
-    public Cursor obtenerTipoCultivos() {
-        SQLiteDatabase db = baseDatos.getReadableDatabase();
-
-        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-
-        builder.setTables(BaseDatosPlagas.Tablas.TIPOCULTIVO);
-
-        return builder.query(db, proyTipoCultivo, null, null, null, null, null);
-    }
-
-    public static final String[] proyTipoCultivo = new String[]{
-                BaseDatosPlagas.Tablas.TIPOCULTIVO + "." + ContractPlagas.TipoCultivo.ID,
-                ContractPlagas.TipoCultivo.NOMBRE,
-            };
-
-    public void insertarTipoCultivos(TipoCultivo tipoCultivo) {
-        SQLiteDatabase db = baseDatos.getWritableDatabase();
-
-        ContentValues valores = new ContentValues();
-        valores.put(ContractPlagas.TipoCultivo.ID, tipoCultivo.id);
-        valores.put(ContractPlagas.TipoCultivo.NOMBRE, tipoCultivo.nombre);
-
-        db.insertOrThrow(BaseDatosPlagas.Tablas.TIPOCULTIVO, null, valores);
-
-    }
-
-
-
     public SQLiteDatabase getDb() {
         return baseDatos.getWritableDatabase();
     }
+
+
+    //proyeccion login
+    public static final String[] consultarUsuario = new String[]{
+            BaseDatosPlagas.Tablas.USUARIO + "." + ContractPlagas.Usuario.ID,
+            ContractPlagas.Usuario.EMAIL,
+    };
+
+    //proyeccion Cultivos
+    public static final String[] consultarCultivos = new String[]{
+            BaseDatosPlagas.Tablas.USUARIO + "." + ContractPlagas.Usuario.ID,
+            ContractPlagas.Usuario.EMAIL,
+    };
+
+    //proyeccion
+
+
 
 }

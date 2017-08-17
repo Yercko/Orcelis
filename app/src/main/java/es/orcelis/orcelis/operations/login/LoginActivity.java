@@ -1,8 +1,16 @@
 package es.orcelis.orcelis.operations.login;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +19,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.data.ContractPlagas;
 import es.orcelis.orcelis.operations.dashboard.MainActivity;
 
 /**
@@ -116,11 +127,71 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        //manejo de peticion OK
+            //lanzar Asynctask con insercion de los datos
+        new TareaPruebaDatos(this).execute();
+        //manejo de KO
+            //onLoginFailed
 
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
+
+
     }
+    public class TareaPruebaDatos extends AsyncTask<Void, Void, Void> {
+        Activity activity;
+        public TareaPruebaDatos(Activity activity) {
+            this.activity = activity;
+        }
 
+        @Override
+        protected Void doInBackground(Void... params) {
+            ContentResolver contentResolver = getContentResolver();
+            // Lista de operaciones
+            ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+            ops.add(ContentProviderOperation.newInsert(ContractPlagas.CONTENT_URI_Cultivo)
+                    .withValue(ContractPlagas.Cultivo.ID, "2")
+                    .withValue(ContractPlagas.Cultivo.NOMBRE,"nombre del cultivo")
+                    .withValue(ContractPlagas.Cultivo.GEOJSON, "{'sdsadsa'}")
+                    .build());
+            try {
+                contentResolver.applyBatch(ContractPlagas.AUTORIDAD, ops);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (OperationApplicationException e) {
+                e.printStackTrace();
+            }
+            Log.d("Clientes", "Clientes");
+            DatabaseUtils.dumpCursor(contentResolver.query(ContractPlagas.CONTENT_URI_Usuario, null, null, null, null));
+            //Columnas de la tabla a recuperar
+            /*
+            String[] projection = new String[] {
+                    Clientes._ID,
+                    Clientes.COL_NOMBRE,
+                    Clientes.COL_TELEFONO,
+                    Clientes.COL_EMAIL };
+
+
+                ContentResolver cr = getContentResolver();
+
+                //Hacemos la consulta
+                Cursor cur = cr.query(clientesUri,
+                    projection, //Columnas a devolver
+                    null,       //Condición de la query
+                    null,       //Argumentos variables de la query
+                    null);      //Orden de los resultados
+*/
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Intent intent = new Intent(activity,MainActivity.class);
+            startActivity(intent);
+
+        }
+    }
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), getString(R.string.login_falla), Toast.LENGTH_LONG).show();
 
