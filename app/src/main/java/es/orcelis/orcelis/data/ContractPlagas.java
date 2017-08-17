@@ -19,7 +19,7 @@ public class ContractPlagas {
     /**
      * URI de contenido principal
      */
-    public static Uri CONTENT_URI_Usuario = Uri.parse("content://" + AUTORIDAD + "/"+"Usuario");
+    public static Uri CONTENT_URI_Usuario = Uri.parse("content://" + AUTORIDAD + "/"+BaseDatosPlagas.Tablas.USUARIO);
     public static Uri CONTENT_URI_TipoCultivo = Uri.parse("content://" + AUTORIDAD + "/"+"TipoCultivo");
     public static Uri CONTENT_URI_Explotacion = Uri.parse("content://" + AUTORIDAD + "/"+"Explotacion");
     public static Uri CONTENT_URI_Cultivo = Uri.parse("content://" + AUTORIDAD + "/"+"Cultivo");
@@ -42,10 +42,10 @@ public class ContractPlagas {
 
     public static final int CABECERAS_TIPO_CULTIVO = 100;
     public static final int CABECERAS_TIPO_CULTIVO_ID = 101;
-    public static final int CABECERAS_CULTIVO = 200;
-    public static final int CABECERAS_CULTIVO_ID = 201;
-    public static final int CABECERAS_USUARIO = 200;
-    public static final int CABECERAS_USUARIO_ID = 201;
+    public static final int CABECERAS_CULTIVO = 110;
+    public static final int CABECERAS_CULTIVO_ID = 111;
+    public static final int CABECERAS_USUARIO = 120;
+    public static final int CABECERAS_USUARIO_ID = 121;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);

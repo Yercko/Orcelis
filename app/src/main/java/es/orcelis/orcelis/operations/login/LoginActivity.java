@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.orcelis.orcelis.R;
+import es.orcelis.orcelis.api.Repositories;
 import es.orcelis.orcelis.data.ContractPlagas;
 import es.orcelis.orcelis.operations.dashboard.MainActivity;
 
@@ -127,9 +128,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+
+        //lanzar la peticion
+        Repositories repos = new Repositories();
+        repos.loginRequest();
+
         //manejo de peticion OK
             //lanzar Asynctask con insercion de los datos
-        new TareaPruebaDatos(this).execute();
+            new TareaPruebaDatos(this).execute();
         //manejo de KO
             //onLoginFailed
 
@@ -147,10 +153,11 @@ public class LoginActivity extends AppCompatActivity {
             ContentResolver contentResolver = getContentResolver();
             // Lista de operaciones
             ArrayList<ContentProviderOperation> ops = new ArrayList<>();
-            ops.add(ContentProviderOperation.newInsert(ContractPlagas.CONTENT_URI_Cultivo)
-                    .withValue(ContractPlagas.Cultivo.ID, "2")
-                    .withValue(ContractPlagas.Cultivo.NOMBRE,"nombre del cultivo")
-                    .withValue(ContractPlagas.Cultivo.GEOJSON, "{'sdsadsa'}")
+            ops.add(ContentProviderOperation.newInsert(ContractPlagas.CONTENT_URI_Usuario)
+                    .withValue(ContractPlagas.Usuario.ID, "2")
+                    .withValue(ContractPlagas.Usuario.EMAIL,"email")
+                    .withValue(ContractPlagas.Usuario.PASSWORD,"dsadsdaa")
+                    .withValue(ContractPlagas.Usuario.TELEFONO,"231321")
                     .build());
             try {
                 contentResolver.applyBatch(ContractPlagas.AUTORIDAD, ops);

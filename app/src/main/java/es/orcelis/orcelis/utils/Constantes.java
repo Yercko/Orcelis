@@ -6,24 +6,10 @@ package es.orcelis.orcelis.utils;
 
 public class Constantes {
     /**
-     * Puerto que utilizas para la conexión.
-     * Dejalo en blanco si no has configurado esta característica.
-     */
-    private static final String PUERTO_HOST = ":8080";
-    /**
-     * Dirección IP de genymotion o AVD
-     */
-    private static final String IP = "http://192.168.1.180";
-    /**
-     * URLs del Web Service
-     */
-    public static final String GET_URL = IP + PUERTO_HOST + "/servicio%20web/web/obtener_gastos.php";
-    public static final String INSERT_URL = IP + PUERTO_HOST + "/servicio%20web/web/insertar_gasto.php";
-    /**
      * Códigos del campo  ESTADO
      */
     public static final String SUCCESS = "1";
-    public static final String FAILED = "2";
+    public static final String FAILED = "0";
 
     /**
      * Tipo de cuenta para la sincronización
@@ -33,4 +19,5 @@ public class Constantes {
     public static final String USUARIO = "Usuario";
 
 
+    public static final String REMOTE_URL= "http://github.com/";
 }

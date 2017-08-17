@@ -14,6 +14,7 @@ import es.orcelis.orcelis.provider.ContractParaUsuarios;
 
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_CULTIVO;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_TIPO_CULTIVO;
+import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_USUARIO;
 
 /**
  * Created by ymontero on 09/05/2017.
@@ -80,11 +81,20 @@ public class PlagasProvider extends ContentProvider{
         Uri _uri = null;
         int match = ContractPlagas.uriMatcher.match(uri);
         switch (match){
-            case CABECERAS_CULTIVO:
-                long _ID1 = db.insert(BaseDatosPlagas.Tablas.CULTIVO, "", values);
+            case CABECERAS_USUARIO:
+                long _ID1 = db.insert(BaseDatosPlagas.Tablas.USUARIO, "", values);
                 //---if added successfully---
                 if (_ID1 > 0) {
-                    _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Cultivo, _ID1);
+                    _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Usuario, _ID1);
+                    getContext().getContentResolver().notifyChange(_uri, null);
+                    notificarCambio(uri);
+                }
+                break;
+            case CABECERAS_CULTIVO:
+                long _ID2 = db.insert(BaseDatosPlagas.Tablas.CULTIVO, "", values);
+                //---if added successfully---
+                if (_ID2 > 0) {
+                    _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Cultivo, _ID2);
                     getContext().getContentResolver().notifyChange(_uri, null);
                     notificarCambio(uri);
                 }
