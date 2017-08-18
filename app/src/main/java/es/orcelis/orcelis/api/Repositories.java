@@ -1,8 +1,6 @@
 package es.orcelis.orcelis.api;
 
 import android.content.Context;
-import android.provider.SyncStateContract;
-import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
@@ -10,21 +8,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import es.orcelis.orcelis.models.Usuario;
+import es.orcelis.orcelis.models.Token;
+import es.orcelis.orcelis.operations.login.ILoginUI;
 import es.orcelis.orcelis.utils.Constantes;
+import es.orcelis.orcelis.utils.UserData;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -70,31 +59,38 @@ public class Repositories {
     }
 
 
-    public void loginRequest(){
+    public void loginRequest(final Context context, final ILoginUI iLoginUI, String username, String password){
         HashMap<String, String> body = new HashMap<String,String>();
+        body.put("grant_type","password");
+        body.put("username",username);
+        body.put("password",password);
 
-
-        Call<Usuario> call = api.avisosUsuario(body);
-        call.enqueue(new Callback<Usuario>() {
+        Call<Token> call = api.loginUsuario(body);
+        call.enqueue(new Callback<Token>() {
             @Override
-            public void onResponse(Call<Usuario> call, retrofit2.Response<Usuario> response) {
+            public void onResponse(Call<Token> call, retrofit2.Response<Token> response) {
                 switch (response.code()) {
                     case 200:
-
-
+                        Token token = response.body();
+                        UserData.getInstance(context).setToken(token);
+                        UserData.getInstance(context).setLogueado(true);
+                        iLoginUI.OnLoginSucces(true);
                         //view.notifyDataSetChanged(data.getResults());
                         break;
                     case 401:
-
+                        UserData.getInstance(context).setToken(null);
+                        UserData.getInstance(context).setLogueado(false);
+                        iLoginUI.OnLoginSucces(false);
+                        Log.v("completado","Se ha acabado la sesion");
                         break;
                     default:
-
-                        break;
+                        Log.v("completado","Peticion completada sin exito");
+                    break;
                 }
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
+            public void onFailure(Call<Token> call, Throwable t) {
                 Log.e("error", t.toString());
             }
         });

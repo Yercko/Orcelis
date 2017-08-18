@@ -78,4 +78,17 @@ public class Usuario {
     public void setFecha_fin_uso(String fecha_fin_uso) {
         this.fecha_fin_uso = fecha_fin_uso;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", pais='" + pais + '\'' +
+                ", fecha_fin_uso='" + fecha_fin_uso + '\'' +
+                '}';
+    }
 }

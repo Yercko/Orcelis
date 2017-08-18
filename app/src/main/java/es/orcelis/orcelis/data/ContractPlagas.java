@@ -46,6 +46,9 @@ public class ContractPlagas {
     public static final int CABECERAS_CULTIVO_ID = 111;
     public static final int CABECERAS_USUARIO = 120;
     public static final int CABECERAS_USUARIO_ID = 121;
+    public static final int CABECERAS_EXPLOTACION = 130;
+    public static final int CABECERAS_EXPLOTACION_ID = 131;
+
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -56,6 +59,10 @@ public class ContractPlagas {
         uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.CULTIVO+"/*", CABECERAS_CULTIVO_ID);
         uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.USUARIO, CABECERAS_USUARIO);
         uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.USUARIO+"/*", CABECERAS_USUARIO_ID);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.EXPLOTACION, CABECERAS_EXPLOTACION);
+        uriMatcher.addURI(AUTORIDAD, BaseDatosPlagas.Tablas.EXPLOTACION+"/*", CABECERAS_EXPLOTACION_ID);
+
+
 
     }
 

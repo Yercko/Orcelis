@@ -41,6 +41,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
+import es.orcelis.orcelis.BaseActivity;
 import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.operations.cultivos.OpcionesCultivosListDialogFragment;
 import es.orcelis.orcelis.operations.cultivos.add_plaga.AddPlagaFormActivity;
@@ -53,7 +54,7 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener,OpcionesCultivosListDialogFragment.Listener,RecargarMapa {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener,OpcionesCultivosListDialogFragment.Listener,RecargarMapa {
 
     private GoogleMap mMap;
 

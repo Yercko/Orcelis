@@ -11,6 +11,7 @@ import android.database.DatabaseUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,22 +24,25 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import es.orcelis.orcelis.BaseActivity;
 import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.api.Repositories;
 import es.orcelis.orcelis.data.ContractPlagas;
 import es.orcelis.orcelis.operations.dashboard.MainActivity;
+import es.orcelis.orcelis.utils.DialogManager;
 
 /**
  * Created by ymontero on 04/05/2017.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity implements ILoginUI{
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
     @Bind(R.id.input_email)
     EditText _emailText;
-    @Bind(R.id.input_password) EditText _passwordText;
+    @Bind(R.id.input_password)
+    EditText _passwordText;
     @Bind(R.id.btn_login)
     Button _loginButton;
     @Bind(R.id.link_signup)
@@ -85,26 +89,27 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getString(R.string.autenticando));
-        progressDialog.show();
+        DialogManager.getDialogDefault(this,getString(R.string.autenticando));
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
-
+        _loginButton.setEnabled(true);
+        //lanzar la peticion
+        Repositories repos = new Repositories();
+        repos.loginRequest(this,this,email,password);
+        /*
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
                         onLoginSuccess();
                         // onLoginFailed();
-                        progressDialog.dismiss();
+
                     }
                 }, 3000);
+                */
     }
 
 
@@ -126,22 +131,28 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
-
-        //lanzar la peticion
-        Repositories repos = new Repositories();
-        repos.loginRequest();
-
+    @Override
+    public void OnLoginSucces(boolean correcto) {
         //manejo de peticion OK
-            //lanzar Asynctask con insercion de los datos
-            new TareaPruebaDatos(this).execute();
+        //lanzar Asynctask con insercion de los datos
+        //new TareaPruebaDatos(this).execute();
         //manejo de KO
-            //onLoginFailed
+        //onLoginFailed
+        DialogManager.ocultarDialogDefault();
+
+        if (correcto) {
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Snackbar.make(_loginButton, getString(R.string.msg_login_error), Snackbar.LENGTH_LONG)
+                    .show();
+        }
 
 
 
     }
+
     public class TareaPruebaDatos extends AsyncTask<Void, Void, Void> {
         Activity activity;
         public TareaPruebaDatos(Activity activity) {
@@ -194,8 +205,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Intent intent = new Intent(activity,MainActivity.class);
-            startActivity(intent);
+
 
         }
     }

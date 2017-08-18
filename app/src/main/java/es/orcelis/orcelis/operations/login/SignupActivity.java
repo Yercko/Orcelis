@@ -13,25 +13,23 @@ import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import es.orcelis.orcelis.BaseActivity;
 import es.orcelis.orcelis.R;
 
 /**
  * Created by ymontero on 04/05/2017.
  */
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends BaseActivity {
     private static final String TAG = "SignupActivity";
 
-    @Bind(R.id.input_name)
-    EditText _nameText;
+    @Bind(R.id.input_name) EditText _nameText;
     @Bind(R.id.input_address) EditText _addressText;
     @Bind(R.id.input_email) EditText _emailText;
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
-    @Bind(R.id.btn_signup)
-    Button _signupButton;
-    @Bind(R.id.link_login)
-    TextView _loginLink;
+    @Bind(R.id.btn_signup) Button _signupButton;
+    @Bind(R.id.link_login) TextView _loginLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,5 +151,13 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

@@ -3,6 +3,7 @@ package es.orcelis.orcelis.api;
 import java.util.HashMap;
 import java.util.List;
 
+import es.orcelis.orcelis.models.Token;
 import es.orcelis.orcelis.models.Usuario;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,6 +19,6 @@ import retrofit2.http.POST;
 public interface ApiService {
 
     @FormUrlEncoded
-    @POST("misim-bus-webapp/rest/getAvisosUsuario")
-    Call<Usuario> avisosUsuario(@FieldMap HashMap<String, String> body);
+    @POST("/rest/login")
+    Call<Token> loginUsuario(@FieldMap HashMap<String, String> body);
 }

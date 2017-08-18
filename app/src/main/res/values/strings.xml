@@ -12,6 +12,7 @@
     <string name="account_type">es.orcelis.orcelis.account</string>
     <string name="provider_authority">es.orcelis.orcelis</string>
 
+    <!-- Login -->
 
     <string name="creando_cuenta">Creando cuenta…</string>
     <string name="min_caracteres">mínimo 3 caracteres</string>
@@ -29,6 +30,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="msg_login_error">Email o contraseña incorrecto, por favor, intentelo de nuevo</string>
 
 
     <!-- Cultivos -->

@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import es.orcelis.orcelis.provider.ContractParaUsuarios;
 
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_CULTIVO;
+import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_EXPLOTACION;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_TIPO_CULTIVO;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_USUARIO;
 
@@ -30,7 +31,10 @@ public class PlagasProvider extends ContentProvider{
     @Override
     public boolean onCreate() {
         datos = OpBaseDatosHelper.obtenerInstancia(getContext());
-        resolver = getContext().getContentResolver();
+        if (getContext() != null) {
+            resolver = getContext().getContentResolver();
+        }
+
         return true;
     }
 
@@ -86,17 +90,14 @@ public class PlagasProvider extends ContentProvider{
                 //---if added successfully---
                 if (_ID1 > 0) {
                     _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Usuario, _ID1);
-                    getContext().getContentResolver().notifyChange(_uri, null);
-                    notificarCambio(uri);
+                    notificarCambio(_uri);
                 }
                 break;
-            case CABECERAS_CULTIVO:
-                long _ID2 = db.insert(BaseDatosPlagas.Tablas.CULTIVO, "", values);
-                //---if added successfully---
+            case CABECERAS_EXPLOTACION:
+                long _ID2 = db.insert(BaseDatosPlagas.Tablas.EXPLOTACION, "", values);
                 if (_ID2 > 0) {
                     _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Cultivo, _ID2);
-                    getContext().getContentResolver().notifyChange(_uri, null);
-                    notificarCambio(uri);
+                    notificarCambio(_uri);
                 }
                 break;
             case CABECERAS_TIPO_CULTIVO:

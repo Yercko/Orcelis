@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import es.orcelis.orcelis.BaseActivity;
 import es.orcelis.orcelis.R;
 
-public class AddPlagaFormActivity extends AppCompatActivity {
+public class AddPlagaFormActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

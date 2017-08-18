@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import es.orcelis.orcelis.BaseActivity;
 import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.data.ContractPlagas;
 import es.orcelis.orcelis.data.OpBaseDatosHelper;
@@ -29,7 +30,7 @@ import es.orcelis.orcelis.operations.historial.dummy.DummyContent;
 
 import static es.orcelis.orcelis.utils.Constantes.ACCOUNT_TYPE;
 
-public class MainActivity extends AppCompatActivity implements HistorialItemFragment.OnListFragmentInteractionListener {
+public class MainActivity extends BaseActivity implements HistorialItemFragment.OnListFragmentInteractionListener {
 
     private TextView mTextMessage;
     Account mAccount;
@@ -104,34 +105,13 @@ public class MainActivity extends AppCompatActivity implements HistorialItemFrag
     public class TareaPruebaDatos extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            /*
-            try {
-                datos.getDb().beginTransaction();
-                // Inserción Clientes
-                datos.insertarTipoCultivos(new TipoCultivo("1", "Veronica"));
-                datos.insertarTipoCultivos(new TipoCultivo("2", "Yercko"));
-
-                datos.getDb().setTransactionSuccessful();
-            } finally {
-                datos.getDb().endTransaction();
-            }
-
-            // [QUERIES]
-            Log.d("Tipos de cultivos","Tipos de cultivos");
-            DatabaseUtils.dumpCursor(datos.obtenerTipoCultivos());
-
-            */
-
             ContentResolver contentResolver = getContentResolver();
             // Lista de operaciones
             ArrayList<ContentProviderOperation> ops = new ArrayList<>();
-
             ops.add(ContentProviderOperation.newInsert(ContractPlagas.CONTENT_URI_Usuario)
                     .withValue(ContractPlagas.TipoCultivo.ID, "2")
                     .withValue(ContractPlagas.TipoCultivo.NOMBRE, 3.6f)
                     .build());
-
-
             try {
                 contentResolver.applyBatch(ContractPlagas.AUTORIDAD, ops);
             } catch (RemoteException e) {
