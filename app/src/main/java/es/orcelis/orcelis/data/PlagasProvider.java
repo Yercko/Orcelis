@@ -5,14 +5,12 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import es.orcelis.orcelis.provider.ContractParaUsuarios;
-
-import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_CULTIVO;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_EXPLOTACION;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_TIPO_CULTIVO;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_USUARIO;
@@ -46,19 +44,12 @@ public class PlagasProvider extends ContentProvider{
         Cursor c = null;
 
         switch (match) {
-            case CABECERAS_CULTIVO:
-                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.consultarUsuario,
-                        selection, selectionArgs,
-                        null, null, sortOrder);
+            case CABECERAS_USUARIO:
+                c = datos.getDb().query(BaseDatosPlagas.Tablas.USUARIO, OpBaseDatosHelper.consultarUsuario,
+                        selection, selectionArgs,null, null, sortOrder);
                 c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);
                 break;
-            case ContractParaUsuarios.ALLROWS:
-                // Consultando todos los registros
-                c = datos.getDb().query(BaseDatosPlagas.Tablas.TIPOCULTIVO, OpBaseDatosHelper.consultarCultivos,
-                        selection, selectionArgs,
-                        null, null, sortOrder);
-                c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);
-                break;
+
             default:
                 //throw new IllegalArgumentException("URI no soportada: " + uri);
         }
@@ -86,12 +77,7 @@ public class PlagasProvider extends ContentProvider{
         int match = ContractPlagas.uriMatcher.match(uri);
         switch (match){
             case CABECERAS_USUARIO:
-                long _ID1 = db.insert(BaseDatosPlagas.Tablas.USUARIO, "", values);
-                //---if added successfully---
-                if (_ID1 > 0) {
-                    _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Usuario, _ID1);
-                    notificarCambio(_uri);
-                }
+                insertarDato(db, ContractPlagas.CONTENT_URI_Usuario,BaseDatosPlagas.Tablas.USUARIO , values);
                 break;
             case CABECERAS_EXPLOTACION:
                 long _ID2 = db.insert(BaseDatosPlagas.Tablas.EXPLOTACION, "", values);
@@ -125,5 +111,37 @@ public class PlagasProvider extends ContentProvider{
     //TODO echar un ojo a notifyChange a true
     private void notificarCambio(Uri uri) {
         resolver.notifyChange(uri, null);
+    }
+    /**
+     * In case of a conflict when inserting the values, another update query is sent.
+     * @param db     Database to insert to.
+     * @param uri    Content provider uri.
+     * @param table  Table to insert to.
+     * @param values The values to insert to.
+     */
+    private boolean insertarDato(SQLiteDatabase db, Uri uri, String table,
+                                 ContentValues values) {
+        boolean resultado;
+        long _ID1;
+        try {
+            _ID1 =  db.insertOrThrow(table, null, values);
+            if (_ID1 > 0) {
+                Uri _uri = ContentUris.withAppendedId(uri,_ID1);
+                notificarCambio(_uri);
+            }
+            resultado = true;
+        } catch (SQLiteConstraintException e) {
+            int nrRows = 0;
+                   // nrRows= update(uri, values, column + "=?",
+                   // new String[]{values.getAsString(column)});
+            if (nrRows == 0) {
+                resultado = false;
+            }
+            else{
+                resultado = true;
+            }
+        }
+
+        return resultado;
     }
 }

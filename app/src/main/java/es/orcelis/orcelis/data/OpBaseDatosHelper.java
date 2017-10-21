@@ -34,8 +34,9 @@ public final class OpBaseDatosHelper {
 
     //proyeccion login
     public static final String[] consultarUsuario = new String[]{
-            BaseDatosPlagas.Tablas.USUARIO + "." + ContractPlagas.Usuario.ID,
+            ContractPlagas.Usuario.ID,
             ContractPlagas.Usuario.EMAIL,
+            ContractPlagas.Usuario.TELEFONO
     };
 
     //proyeccion Cultivos

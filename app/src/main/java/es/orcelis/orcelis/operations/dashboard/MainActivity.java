@@ -27,6 +27,7 @@ import es.orcelis.orcelis.operations.configuracion.ConfiguracionFragment;
 import es.orcelis.orcelis.operations.explotaciones.ExplotacionFragment;
 import es.orcelis.orcelis.operations.historial.HistorialItemFragment;
 import es.orcelis.orcelis.operations.historial.dummy.DummyContent;
+import es.orcelis.orcelis.utils.UserData;
 
 import static es.orcelis.orcelis.utils.Constantes.ACCOUNT_TYPE;
 
@@ -78,7 +79,8 @@ public class MainActivity extends BaseActivity implements HistorialItemFragment.
         //getApplicationContext().deleteDatabase("pedidos.db");
         //datos = OpBaseDatosHelper
         //        .obtenerInstancia(getApplicationContext());
-        new TareaPruebaDatos().execute();
+        new SyncronizadorHelper(this).usuarioShoot(UserData.getInstance(this).getUsername());
+
 
 
         mAccount = CreateSyncAccount(this);
@@ -102,30 +104,7 @@ public class MainActivity extends BaseActivity implements HistorialItemFragment.
 
     }
 
-    public class TareaPruebaDatos extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            ContentResolver contentResolver = getContentResolver();
-            // Lista de operaciones
-            ArrayList<ContentProviderOperation> ops = new ArrayList<>();
-            ops.add(ContentProviderOperation.newInsert(ContractPlagas.CONTENT_URI_Usuario)
-                    .withValue(ContractPlagas.TipoCultivo.ID, "2")
-                    .withValue(ContractPlagas.TipoCultivo.NOMBRE, 3.6f)
-                    .build());
-            try {
-                contentResolver.applyBatch(ContractPlagas.AUTORIDAD, ops);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (OperationApplicationException e) {
-                e.printStackTrace();
-            }
 
-            Log.d("Clientes", "Clientes");
-            DatabaseUtils.dumpCursor(contentResolver.query(ContractPlagas.CONTENT_URI_Usuario, null, null, null, null));
-
-            return null;
-        }
-    }
 
 
     /**

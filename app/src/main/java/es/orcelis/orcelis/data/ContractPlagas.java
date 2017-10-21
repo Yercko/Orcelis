@@ -98,6 +98,7 @@ public class ContractPlagas {
         String ID = "id";
         String NOMBRE = "nombre";
         String TOKEN = "token";
+        String ID_USUARIO= "id_usuario";
     }
 
     interface ColumnasCultivo extends BaseColumns{

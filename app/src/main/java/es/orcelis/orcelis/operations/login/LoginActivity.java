@@ -153,62 +153,7 @@ public class LoginActivity extends BaseActivity implements ILoginUI{
 
     }
 
-    public class TareaPruebaDatos extends AsyncTask<Void, Void, Void> {
-        Activity activity;
-        public TareaPruebaDatos(Activity activity) {
-            this.activity = activity;
-        }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            ContentResolver contentResolver = getContentResolver();
-            // Lista de operaciones
-            ArrayList<ContentProviderOperation> ops = new ArrayList<>();
-            ops.add(ContentProviderOperation.newInsert(ContractPlagas.CONTENT_URI_Usuario)
-                    .withValue(ContractPlagas.Usuario.ID, "2")
-                    .withValue(ContractPlagas.Usuario.EMAIL,"email")
-                    .withValue(ContractPlagas.Usuario.PASSWORD,"dsadsdaa")
-                    .withValue(ContractPlagas.Usuario.TELEFONO,"231321")
-                    .build());
-            try {
-                contentResolver.applyBatch(ContractPlagas.AUTORIDAD, ops);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (OperationApplicationException e) {
-                e.printStackTrace();
-            }
-            Log.d("Clientes", "Clientes");
-            DatabaseUtils.dumpCursor(contentResolver.query(ContractPlagas.CONTENT_URI_Usuario, null, null, null, null));
-            //Columnas de la tabla a recuperar
-            /*
-            String[] projection = new String[] {
-                    Clientes._ID,
-                    Clientes.COL_NOMBRE,
-                    Clientes.COL_TELEFONO,
-                    Clientes.COL_EMAIL };
-
-
-                ContentResolver cr = getContentResolver();
-
-                //Hacemos la consulta
-                Cursor cur = cr.query(clientesUri,
-                    projection, //Columnas a devolver
-                    null,       //Condición de la query
-                    null,       //Argumentos variables de la query
-                    null);      //Orden de los resultados
-*/
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-
-
-        }
-    }
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), getString(R.string.login_falla), Toast.LENGTH_LONG).show();
 

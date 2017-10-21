@@ -25,6 +25,8 @@ public class UserData {
     public Token token;
     public boolean logueado;
 
+    public String username;
+
     /**
      *
      */
@@ -76,6 +78,8 @@ public class UserData {
             token = null;
         }
         logueado = prefs.getBoolean("logueado",false);
+        username = prefs.getString("username","");
+
     }
 
 
@@ -88,6 +92,7 @@ public class UserData {
         json = gson.toJson(token);
         editor.putString("token", json);
         editor.putBoolean("logueado",logueado);
+        editor.putString("username",username);
         editor.apply();
 
     }
@@ -107,5 +112,13 @@ public class UserData {
 
     public void setLogueado(boolean logueado) {
         this.logueado = logueado;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -40,6 +40,17 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.PAIS, ContractPlagas.Pais._ID,
+                ContractPlagas.Pais.ID,ContractPlagas.Pais.NOMBRE));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.REGION, ContractPlagas.Region._ID,
+                ContractPlagas.Region.ID,ContractPlagas.Region.NOMBRE));
+
         db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL, %s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL )",
                 Tablas.USUARIO, ContractPlagas.Usuario._ID,
@@ -52,31 +63,85 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
                 ContractPlagas.TipoCultivo.ID, ContractPlagas.TipoCultivo.NOMBRE));
 
         db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL  )",
+                Tablas.EXPLOTACION, ContractPlagas.Cultivo._ID,
+                ContractPlagas.Explotacion.ID,ContractPlagas.Explotacion.NOMBRE,
+                ContractPlagas.Explotacion.TOKEN,ContractPlagas.Explotacion.ID_USUARIO));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL )",
                 Tablas.CULTIVO, ContractPlagas.Cultivo._ID,
-                ContractPlagas.Cultivo.NOMBRE, ContractPlagas.Cultivo.GEOJSON));
+                ContractPlagas.Cultivo.ID,ContractPlagas.Cultivo.NOMBRE,
+                ContractPlagas.Cultivo.GEOJSON));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.IMAGENPLAGA, ContractPlagas.ImagenPlaga._ID,
+                ContractPlagas.ImagenPlaga.ID,ContractPlagas.ImagenPlaga.MIME));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.UNIDAD, ContractPlagas.Unidad._ID,
+                ContractPlagas.Unidad.ID,ContractPlagas.Unidad.NOMBRE));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.PLAGA, ContractPlagas.Plaga._ID,
+                ContractPlagas.Plaga.ID,ContractPlagas.Plaga.NOMBRE,
+                ContractPlagas.Plaga.DESCRIPCION)); //TODO falta unidad
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.TIPOCULTIVO_PLAGA, ContractPlagas.TipoCultivo_Plaga._ID,
+                ContractPlagas.TipoCultivo_Plaga.ID,ContractPlagas.TipoCultivo_Plaga.ID_PAIS));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.TRIPS, ContractPlagas.Trips._ID,
+                ContractPlagas.Trips.ID,ContractPlagas.Trips.NOMBRE));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.PUNTOS, ContractPlagas.Puntos._ID,
+                ContractPlagas.Puntos.ID,ContractPlagas.Puntos.LAT));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.PUNTOSPLAGA, ContractPlagas.PuntosPlaga._ID,
+                ContractPlagas.PuntosPlaga.ID,ContractPlagas.PuntosPlaga.CANTIDAD));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.FOTOS, ContractPlagas.Fotos._ID,
+                ContractPlagas.Fotos.ID,ContractPlagas.Fotos.MIME));
+
+        db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL )",
+                Tablas.PUNTOSFOTOS, ContractPlagas.PuntosFotos._ID,
+                ContractPlagas.PuntosFotos.ID,ContractPlagas.PuntosFotos.ID_FOTO));
+
+
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.USUARIO);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.TIPOCULTIVO);
-
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.EXPLOTACION);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.CULTIVO);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.FOTOS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOSFOTOS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.TRIPS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PLAGA);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.IMAGENPLAGA);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.UNIDAD);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOSPLAGA);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.TIPOCULTIVO_PLAGA);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.PAIS);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.REGION);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.USUARIO);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.TIPOCULTIVO);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.EXPLOTACION);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.CULTIVO);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.IMAGENPLAGA);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.UNIDAD);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PLAGA);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.TIPOCULTIVO_PLAGA);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.TRIPS);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOS);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOSPLAGA);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.FOTOS);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOSFOTOS);
 
         onCreate(db);
     }
