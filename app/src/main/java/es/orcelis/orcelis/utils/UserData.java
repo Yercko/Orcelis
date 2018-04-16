@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 
 import es.orcelis.orcelis.models.Token;
+import es.orcelis.orcelis.models.datasync.Usuario;
 
 /**
  * Created by yercko on 23/05/2017.
@@ -26,6 +27,11 @@ public class UserData {
     public boolean logueado;
 
     public String username;
+
+
+    public Usuario datos_usuario_actual;
+
+
 
     /**
      *
@@ -120,5 +126,13 @@ public class UserData {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Usuario getDatos_usuario_actual() {
+        return datos_usuario_actual;
+    }
+
+    public void setDatos_usuario_actual(Usuario datos_usuario_actual) {
+        this.datos_usuario_actual = datos_usuario_actual;
     }
 }

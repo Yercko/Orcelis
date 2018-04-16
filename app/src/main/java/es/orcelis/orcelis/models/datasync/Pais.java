@@ -1,4 +1,4 @@
-package es.orcelis.orcelis.models;
+package es.orcelis.orcelis.models.datasync;
 
 /**
  * Created by yercko on 07/05/2017.

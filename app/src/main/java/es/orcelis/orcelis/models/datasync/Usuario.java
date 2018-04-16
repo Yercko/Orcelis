@@ -1,4 +1,7 @@
-package es.orcelis.orcelis.models;
+package es.orcelis.orcelis.models.datasync;
+
+import java.util.List;
+
 
 /**
  * Created by ymontero on 05/05/2017.
@@ -10,17 +13,14 @@ public class Usuario {
     public String password;
     public String telefono;
     public String uuid;
-    public String pais;
+    public Pais pais;
     public String fecha_fin_uso;
+    public List<Explotacion> explotaciones;
 
-    public Usuario(String id, String email, String password, String telefono, String uuid, String pais, String fecha_fin_uso) {
+    public Usuario(String id, String email, String password) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.telefono = telefono;
-        this.uuid = uuid;
-        this.pais = pais;
-        this.fecha_fin_uso = fecha_fin_uso;
     }
 
     public String getId() {
@@ -63,11 +63,11 @@ public class Usuario {
         this.uuid = uuid;
     }
 
-    public String getPais() {
+    public Pais getPais() {
         return pais;
     }
 
-    public void setPais(String pais) {
+    public void setPais(Pais pais) {
         this.pais = pais;
     }
 
@@ -79,16 +79,11 @@ public class Usuario {
         this.fecha_fin_uso = fecha_fin_uso;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id='" + id + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", uuid='" + uuid + '\'' +
-                ", pais='" + pais + '\'' +
-                ", fecha_fin_uso='" + fecha_fin_uso + '\'' +
-                '}';
+    public List<Explotacion> getExplotaciones() {
+        return explotaciones;
+    }
+
+    public void setExplotaciones(List<Explotacion> explotaciones) {
+        this.explotaciones = explotaciones;
     }
 }

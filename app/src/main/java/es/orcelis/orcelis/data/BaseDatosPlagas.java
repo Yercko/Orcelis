@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 
 /**
  * Created by yercko on 07/05/2017.
@@ -21,7 +20,7 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
         String EXPLOTACION = "Explotacion";
         String CULTIVO = "Cultivo";
         String PUNTOS = "Puntos";
-        String FOTOS = "Fotos";
+        String INSPECCION = "Inspeccion";
         String PUNTOSFOTOS = "PuntosFotos";
         String TRIPS = "Trips";
         String PLAGA = "Plaga";
@@ -109,11 +108,11 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
                         "%s TEXT NOT NULL,%s TEXT NOT NULL )",
                 Tablas.PUNTOSPLAGA, ContractPlagas.PuntosPlaga._ID,
                 ContractPlagas.PuntosPlaga.ID,ContractPlagas.PuntosPlaga.CANTIDAD));
-
+        //haciendo
         db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "%s TEXT NOT NULL,%s TEXT NOT NULL )",
-                Tablas.FOTOS, ContractPlagas.Fotos._ID,
-                ContractPlagas.Fotos.ID,ContractPlagas.Fotos.MIME));
+                Tablas.INSPECCION, ContractPlagas.Inspeccion._ID,
+                ContractPlagas.Inspeccion.ID, ContractPlagas.Inspeccion.MIME));
 
         db.execSQL(String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "%s TEXT NOT NULL,%s TEXT NOT NULL )",
@@ -140,7 +139,7 @@ public class BaseDatosPlagas extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.TRIPS);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOS);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOSPLAGA);
-        db.execSQL("DROP TABLE IF EXISTS " + Tablas.FOTOS);
+        db.execSQL("DROP TABLE IF EXISTS " + Tablas.INSPECCION);
         db.execSQL("DROP TABLE IF EXISTS " + Tablas.PUNTOSFOTOS);
 
         onCreate(db);

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import es.orcelis.orcelis.models.Token;
-import es.orcelis.orcelis.models.Usuario;
+import es.orcelis.orcelis.models.datasync.Usuario;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
@@ -21,4 +21,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/rest/login")
     Call<Token> loginUsuario(@FieldMap HashMap<String, String> body);
+
+    @Headers("Content-Type: application/json")
+    @POST("/rest/sync")
+    Call<Usuario> syncUsuario(@Body Usuario body);
+
+
 }

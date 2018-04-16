@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_EXPLOTACION;
+import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_FOTOS;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_TIPO_CULTIVO;
 import static es.orcelis.orcelis.data.ContractPlagas.CABECERAS_USUARIO;
 
@@ -49,7 +50,11 @@ public class PlagasProvider extends ContentProvider{
                         selection, selectionArgs,null, null, sortOrder);
                 c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Usuario);
                 break;
-
+            case CABECERAS_FOTOS:
+                c = datos.getDb().query(BaseDatosPlagas.Tablas.INSPECCION,OpBaseDatosHelper.consultarFotos,
+                        selection,selectionArgs,null,null,sortOrder);
+                c.setNotificationUri(resolver,ContractPlagas.CONTENT_URI_Inspeccion);
+                break;
             default:
                 //throw new IllegalArgumentException("URI no soportada: " + uri);
         }
@@ -87,8 +92,11 @@ public class PlagasProvider extends ContentProvider{
                 }
                 break;
             case CABECERAS_TIPO_CULTIVO:
-                db.insertOrThrow(BaseDatosPlagas.Tablas.TIPOCULTIVO, null, values);
-                notificarCambio(uri);
+                long _ID3 = db.insert(BaseDatosPlagas.Tablas.INSPECCION, "", values);
+                if (_ID3 > 0) {
+                    _uri = ContentUris.withAppendedId(ContractPlagas.CONTENT_URI_Inspeccion, _ID3);
+                    notificarCambio(_uri);
+                }
                 break;
         }
 

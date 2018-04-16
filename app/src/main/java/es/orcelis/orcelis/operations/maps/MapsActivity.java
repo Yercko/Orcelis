@@ -466,6 +466,20 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Vi
 
     }
 
+    /*
+    * -------- Proceso ---------
+    * - Almacenamiento temporal e interfaz
+    * pedir datos hasta completar operaciones
+    *
+    * - Almacenamiento de datos
+    * guardarlo en la estructura en memoria y a su vez pasarlo a BD
+    *
+    * - Carga de datos de BD a memoria
+    * al iniciar la aplicacion se deberá cargar all in estructura en memoria
+    *
+    * - Carga de datos de memoria a interfaz visual
+    *   en cada pantalla se comprueba los datos en memoria y se va rellenando la interfaz visual
+    * */
 
 private LocationListener locationListener = new LocationListener() {
     public void onLocationChanged(Location location) {

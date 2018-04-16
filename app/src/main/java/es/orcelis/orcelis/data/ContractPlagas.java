@@ -24,7 +24,7 @@ public class ContractPlagas {
     public static Uri CONTENT_URI_Explotacion = Uri.parse("content://" + AUTORIDAD + "/"+"Explotacion");
     public static Uri CONTENT_URI_Cultivo = Uri.parse("content://" + AUTORIDAD + "/"+"Cultivo");
     public static Uri CONTENT_URI_Puntos = Uri.parse("content://" + AUTORIDAD + "/"+"Puntos");
-    public static Uri CONTENT_URI_Fotos = Uri.parse("content://" + AUTORIDAD + "/"+"Fotos");
+    public static Uri CONTENT_URI_Inspeccion = Uri.parse("content://" + AUTORIDAD + "/"+"Fotos");
     public static Uri CONTENT_URI_PuntosFotos = Uri.parse("content://" + AUTORIDAD + "/"+"PuntosFotos");
     public static Uri CONTENT_URI_Trips = Uri.parse("content://" + AUTORIDAD + "/"+"Trips");
     public static Uri CONTENT_URI_Plaga = Uri.parse("content://" + AUTORIDAD + "/"+"Plaga");
@@ -48,6 +48,8 @@ public class ContractPlagas {
     public static final int CABECERAS_USUARIO_ID = 121;
     public static final int CABECERAS_EXPLOTACION = 130;
     public static final int CABECERAS_EXPLOTACION_ID = 131;
+    public static final int CABECERAS_FOTOS = 140;
+    public static final int CABECERAS_FOTOS_ID = 141;
 
 
     static {
@@ -115,11 +117,14 @@ public class ContractPlagas {
         String FECHA_HORA = "fecha_hora";
     }
 
-    interface ColumnasFotos extends BaseColumns{
+    interface ColumnasInspeccion extends BaseColumns{
         String ID = "id";       //id por codigo
         String GRAVEDAD = "gravedad";
         String NOTA = "nota";       //atento
         String MIME = "mime";   //atento y opcional
+        String FECHA_HORA = "fecha_hora";
+        String PLAGA = "plaga";
+        String LOCALIZACION = "localizacion";
     }
 
     interface ColumnasPuntosFotos extends BaseColumns{
@@ -215,7 +220,7 @@ public class ContractPlagas {
             return "PU"+ UUID.randomUUID().toString();
         }
     }
-    public static class Fotos implements ColumnasFotos{
+    public static class Inspeccion implements ColumnasInspeccion {
         public static String generarIdFotos(){
             return "FO"+ UUID.randomUUID().toString();
         }

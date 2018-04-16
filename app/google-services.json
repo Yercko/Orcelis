@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1021772417312",
+    "firebase_url": "https://root-engine-130715.firebaseio.com",
+    "project_id": "root-engine-130715"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021772417312:android:22635fa636f6a5d5",
+        "android_client_info": {
+          "package_name": "es.orcelis.orcelis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1021772417312-l955kpp23ise3ec9mv9f3eiv8ld9obg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.orcelis.orcelis",
+            "certificate_hash": "4fdaf5465c5b879827211ae8dbf12149b3200c05"
+          }
+        },
+        {
+          "client_id": "1021772417312-tjd1v7vuo2v6nu8oo1hh7b15aguj05no.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6IWf5mSxj0fPCeGfSeE4PSmO5n24Zh1Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1021772417312-tjd1v7vuo2v6nu8oo1hh7b15aguj05no.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

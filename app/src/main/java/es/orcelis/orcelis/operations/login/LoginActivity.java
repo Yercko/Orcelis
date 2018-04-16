@@ -1,18 +1,9 @@
 package es.orcelis.orcelis.operations.login;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentProviderOperation;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.OperationApplicationException;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,14 +11,41 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cocoahero.android.geojson.Feature;
+import com.cocoahero.android.geojson.Point;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ResultCodes;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.orcelis.orcelis.BaseActivity;
 import es.orcelis.orcelis.R;
 import es.orcelis.orcelis.api.Repositories;
-import es.orcelis.orcelis.data.ContractPlagas;
+import es.orcelis.orcelis.models.datasync.Cultivo;
+import es.orcelis.orcelis.models.datasync.Explotacion;
+import es.orcelis.orcelis.models.datasync.Inspeccion;
+import es.orcelis.orcelis.models.datasync.Pais;
+import es.orcelis.orcelis.models.datasync.Plaga;
+import es.orcelis.orcelis.models.datasync.TipoCultivo;
+import es.orcelis.orcelis.models.datasync.Trip;
+import es.orcelis.orcelis.models.datasync.Usuario;
 import es.orcelis.orcelis.operations.dashboard.MainActivity;
 import es.orcelis.orcelis.utils.DialogManager;
 
@@ -38,6 +56,10 @@ import es.orcelis.orcelis.utils.DialogManager;
 public class LoginActivity extends BaseActivity implements ILoginUI{
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+
+    private static final int RC_SIGN_IN = 123;
+
+    private FirebaseAuth mAuth;
 
     @Bind(R.id.input_email)
     EditText _emailText;
@@ -66,6 +88,37 @@ public class LoginActivity extends BaseActivity implements ILoginUI{
             }
         });
 
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build());
+
+        mAuth = FirebaseAuth.getInstance();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        // Create and launch sign-in intent
+        if (currentUser == null ) {
+            mAuth.signInWithEmailAndPassword("prueba@orcelis.com", "bi8QFIlltbyg6mAkEgBqtk7afNk=")
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+        }
+        else{
+
+        }
         _signupLink.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -78,6 +131,8 @@ public class LoginActivity extends BaseActivity implements ILoginUI{
             }
         });
     }
+
+
 
     public void login() {
         Log.d(TAG, "Login");
@@ -96,22 +151,14 @@ public class LoginActivity extends BaseActivity implements ILoginUI{
 
         // TODO: Implement your own authentication logic here.
         _loginButton.setEnabled(true);
-        //lanzar la peticion
-        Repositories repos = new Repositories();
-        repos.loginRequest(this,this,email,password);
-        /*
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
 
-                    }
-                }, 3000);
-                */
     }
 
+
+    //lo primero que debe de ir para comprobar si el usuario ya se logueo anteriormente
+    public void inicializar_usuario(){
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
